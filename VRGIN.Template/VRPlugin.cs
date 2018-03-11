@@ -52,6 +52,12 @@ namespace VRGIN.Template
                 // (e.g. characters, camera judging, colliders, etc.)
                 VRManager.Create<GameInterpreter>(CreateContext("VRContext.xml"));
                 VR.Manager.SetMode<GenericSeatedMode>();
+
+            }
+			else
+			{
+				UnityEngine.VR.VRSettings.enabled = false;
+				UnityEngine.VR.VRSettings.LoadDeviceByName("None");
             }
         }
 
