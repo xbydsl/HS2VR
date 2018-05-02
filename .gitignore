@@ -31,3 +31,6 @@ sysinfo.txt
 *.suo
 */bin
 */obj
+
+# VSfile.
+.vs/

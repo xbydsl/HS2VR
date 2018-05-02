@@ -52,6 +52,7 @@
     <Compile Include="ConfigurableContext.cs" />
     <Compile Include="GenericSeatedMode.cs" />
     <Compile Include="GenericStandingMode.cs" />
+    <Compile Include="VRLoader.cs" />
     <Compile Include="VRPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
