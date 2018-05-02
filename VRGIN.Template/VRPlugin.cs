@@ -51,7 +51,7 @@ namespace VRGIN.Template
                 // Note: Use your own implementation of GameInterpreter to gain access to a few useful operatoins
                 // (e.g. characters, camera judging, colliders, etc.)
                 VRManager.Create<GameInterpreter>(CreateContext("VRContext.xml"));
-                VR.Manager.SetMode<GenericSeatedMode>();
+                VR.Manager.SetMode<GenericStandingMode>();
 
             }
 			else

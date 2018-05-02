@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRGIN.Template", "VRGIN.Template\VRGIN.Template.csproj", "{1F634B93-F4C6-45E9-894D-2F3556A74D67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoikatuVR", "VRGIN.Template\KoikatuVR.csproj", "{1F634B93-F4C6-45E9-894D-2F3556A74D67}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRGIN", "VRGIN\VRGIN\VRGIN.csproj", "{22788A2C-7695-4A6A-A9F0-115AB9A05FD4}"
 EndProject
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A44D8C4-D4F0-4951-A1F2-B64FFDD9A290}
 	EndGlobalSection
 EndGlobal
