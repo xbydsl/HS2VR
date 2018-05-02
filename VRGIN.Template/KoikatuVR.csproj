@@ -8,7 +8,7 @@
     <ProjectGuid>{1F634B93-F4C6-45E9-894D-2F3556A74D67}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VRGIN.Template</RootNamespace>
+    <RootNamespace>KoikatuVR</RootNamespace>
     <AssemblyName>KoikatuVR</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,6 +47,9 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>..\VRGIN\Libs\Unity 5.6.5\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsInput">
+      <HintPath>..\VRGIN\Libs\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurableContext.cs" />
@@ -54,6 +57,7 @@
     <Compile Include="GenericStandingMode.cs" />
     <Compile Include="VRPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchoolTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VRGIN\VRGIN\VRGIN.csproj">

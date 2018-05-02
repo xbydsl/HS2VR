@@ -8,7 +8,7 @@ using VRGIN.Core;
 using VRGIN.Helpers;
 using VRGIN.Modes;
 
-namespace VRGIN.Template
+namespace KoikatuVR
 {
     class GenericSeatedMode : SeatedMode
     {

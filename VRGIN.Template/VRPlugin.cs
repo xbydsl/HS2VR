@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using VRGIN.Core;
 using VRGIN.Helpers;
 
-namespace VRGIN.Template
+namespace KoikatuVR
 {
 
     /// <summary>
