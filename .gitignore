@@ -31,4 +31,6 @@ sysinfo.txt
 *.suo
 */bin
 */obj
-/.vs/VRGIN.Template/v15/Server/sqlite3
+
+# VSfile.
+.vs/
