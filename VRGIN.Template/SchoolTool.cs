@@ -115,65 +115,66 @@ namespace KoikatuVR
                 cam2pl();
             }
 
-
+            
             if (device.GetPress(ButtonMask.Grip))
             {
                 pl2cam();
             }
 
-            if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad))
-            {
-                Vector2 touchPosition = device.GetAxis();
-                if (touchPosition.y / touchPosition.x > 1 || touchPosition.y / touchPosition.x < -1)
-                {
-                    if (touchPosition.y > 0) // up
-                    {
-                        VR.Input.Keyboard.KeyDown(VirtualKeyCode.F3);
-                    }
-                    else // down
-                    {
-                        VR.Input.Keyboard.KeyDown(VirtualKeyCode.F4);
-                    }
-                }
-                else
-                {
-                    if (touchPosition.x > 0) // right
-                    {
-                        VR.Input.Keyboard.KeyDown(VirtualKeyCode.F2);
-                    }
-                    else // left
-                    {
-                        VR.Input.Keyboard.KeyDown(VirtualKeyCode.F5);
-                    }
-                }
-            }
 
-            if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Touchpad))
+            if (device.GetPressDown(ButtonMask.Touchpad))
             {
                 Vector2 touchPosition = device.GetAxis();
-                if (touchPosition.y / touchPosition.x > 1 || touchPosition.y / touchPosition.x < -1)
                 {
-                    if (touchPosition.y > 0) // up
+                    if (touchPosition.y > 0.8f) // up
                     {
-                        VR.Input.Keyboard.KeyUp(VirtualKeyCode.F3);
+                        VR.Input.Keyboard.KeyPress(VirtualKeyCode.F3);
                     }
-                    else // down
+                    else if (touchPosition.y < -0.8f) // down
                     {
-                        VR.Input.Keyboard.KeyUp(VirtualKeyCode.F4);
+                        VR.Input.Keyboard.KeyPress(VirtualKeyCode.F4);
+                    }
+                    else if (touchPosition.x > 0.8f) // right
+                    {
+                        VR.Input.Keyboard.KeyPress(VirtualKeyCode.F8);
+                    }
+                    else if (touchPosition.x < -0.8f)// left
+                    {
+                        VR.Input.Keyboard.KeyPress(VirtualKeyCode.F1);
+                    }
+                    else
+                    {
+                        VR.Input.Mouse.RightButtonClick();
                     }
                 }
-                else
+             }
+                /*
+                if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Touchpad))
                 {
-                    if (touchPosition.x > 0) // right
+                    Vector2 touchPosition = device.GetAxis();
+                    if (touchPosition.y / touchPosition.x > 1 || touchPosition.y / touchPosition.x < -1)
                     {
-                        VR.Input.Keyboard.KeyUp(VirtualKeyCode.F2);
+                        if (touchPosition.y > 0) // up
+                        {
+                            VR.Input.Keyboard.KeyUp(VirtualKeyCode.F3);
+                        }
+                        else // down
+                        {
+                            VR.Input.Keyboard.KeyUp(VirtualKeyCode.F4);
+                        }
                     }
-                    else // left
+                    else
                     {
-                        VR.Input.Keyboard.KeyUp(VirtualKeyCode.F5);
+                        if (touchPosition.x > 0) // right
+                        {
+                            VR.Input.Keyboard.KeyUp(VirtualKeyCode.F2);
+                        }
+                        else // left
+                        {
+                            VR.Input.Keyboard.KeyUp(VirtualKeyCode.F5);
+                        }
                     }
-                }
-            }
+                }*/
         }
 
         public override List<HelpText> GetHelpTexts()
