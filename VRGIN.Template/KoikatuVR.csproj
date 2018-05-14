@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\Libs\Assembly-CSharp.dll</HintPath>
+      <HintPath>Libs\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="IllusionPlugin">
@@ -76,6 +76,7 @@
     <None Include="Deploy.props" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assembly-CSharp.dll" />
     <Content Include="Plugins\Images\icon_school.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
