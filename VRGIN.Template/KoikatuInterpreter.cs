@@ -11,7 +11,7 @@ namespace KoikatuVR
         public const int ActionScene = 0;
         public const int TalkScene = 1;
         public const int HScene = 2;
-        public const int NightMenuScene = 2;
+        public const int NightMenuScene = 3;
 
         private KoikatuSettings _Settings;
         private int _Scene;
