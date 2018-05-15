@@ -56,10 +56,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interpreters\ActionSceneInterpreter.cs" />
     <Compile Include="ConfigurableContext.cs" />
     <Compile Include="GenericSeatedMode.cs" />
     <Compile Include="GenericStandingMode.cs" />
-    <Compile Include="KoikatuInterpreter.cs" />
+    <Compile Include="Interpreters\HSceneInterpreter.cs" />
+    <Compile Include="Interpreters\KoikatuInterpreter.cs" />
+    <Compile Include="Interpreters\OtherSceneInterpreter.cs" />
+    <Compile Include="Interpreters\NightMenuSceneInterpreter.cs" />
+    <Compile Include="Interpreters\SceneInterpreter.cs" />
     <Compile Include="VRLoader.cs" />
     <Compile Include="VRPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,7 +81,6 @@
     <None Include="Deploy.props" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assembly-CSharp.dll" />
     <Content Include="Plugins\Images\icon_school.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

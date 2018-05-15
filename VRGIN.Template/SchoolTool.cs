@@ -7,12 +7,13 @@ using VRGIN.Core;
 using VRGIN.Helpers;
 using static SteamVR_Controller;
 using WindowsInput.Native;
+using KoikatuVR.Interpreters;
 
 namespace KoikatuVR
 {
     public class SchoolTool : Tool
     {
-        private KoikatuInterpreter _Interpreter;
+        private ActionSceneInterpreter _Interpreter;
         private KoikatuSettings _Settings;
         private KeySet _KeySet;
         private int _KeySetIndex = 0;
@@ -40,7 +41,6 @@ namespace KoikatuVR
         {
             base.OnAwake();
 
-            _Interpreter = VR.Interpreter as KoikatuInterpreter;
             _Settings = (VR.Context.Settings as KoikatuSettings);
             _KeySet = _Settings.KeySets[0];
         }
@@ -63,6 +63,8 @@ namespace KoikatuVR
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            _Interpreter = (VR.Interpreter as KoikatuInterpreter).SceneInterpreter as ActionSceneInterpreter;
         }
 
         protected override void OnLevel(int level)
