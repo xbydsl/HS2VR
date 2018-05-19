@@ -107,11 +107,14 @@ VRSettings.xmlを書き換えることで割り当てを変えることができ
 * キー配置の切り替え NEXT
 
 <details><summary>設定例</summary><div>
-(↑設定/→マップ移動/←ステータス/・右クリ)と(↑左クリ/←→左右回転/・しゃがみ)を↓を押すたびに切り替える
+(トリガーで歩き、グリップしている間しゃがむ、↑設定/→マップ移動/←ステータス/・右クリ)と
+(トリガーでダッシュ、グリップしている間HMDの位置にキャラを移動、↑左クリ/←→左右回転/・しゃがみ)を↓を押すたびに切り替える
     
 ~~~
   <KeySets>
     <KeySet>
+      <Trigger>WALK</Trigger>
+      <Grip>CROUCH</Grip>
       <Up>F1</Up>
       <Down>NEXT</Down>
       <Right>F3</Right>
@@ -119,6 +122,8 @@ VRSettings.xmlを書き換えることで割り当てを変えることができ
       <Center>RBUTTON</Center>
     </KeySet>
     <KeySet>
+      <Trigger>DASH</Trigger>
+      <Grip>PL2CAM</Grip>
       <Up>LBUTTON</Up>
       <Down>NEXT</Down>
       <Right>RROTATION</Right>
