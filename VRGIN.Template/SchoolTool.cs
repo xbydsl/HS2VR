@@ -19,7 +19,8 @@ namespace KoikatuVR
         private int _KeySetIndex = 0;
 
         // 手抜きのためNumpad方式で方向を保存
-        private int _prevTouchDirection = -1;
+        private int _PrevTouchDirection = -1;
+        private bool _Pl2Cam = false;
 
         private void ChangeKeySet()
         {
@@ -79,17 +80,22 @@ namespace KoikatuVR
 
             if (device.GetPressDown(ButtonMask.Trigger))
             {
-                _Interpreter.StartWalking();
+                InputKey(_KeySet.Trigger, KeyMode.PressDown);
             }
 
             if (device.GetPressUp(ButtonMask.Trigger))
             {
-                _Interpreter.StopWalking();
+                InputKey(_KeySet.Trigger, KeyMode.PressUp);
             }
 
-            if (device.GetPress(ButtonMask.Grip))
+            if (device.GetPressDown(ButtonMask.Grip))
             {
-                _Interpreter.MovePlayerToCamera();
+                InputKey(_KeySet.Grip, KeyMode.PressDown);
+            }
+
+            if (device.GetPressUp(ButtonMask.Grip))
+            {
+                InputKey(_KeySet.Grip, KeyMode.PressUp);
             }
 
             if (device.GetPressDown(ButtonMask.Touchpad))
@@ -99,27 +105,27 @@ namespace KoikatuVR
                     if (touchPosition.y > 0.8f) // up
                     {
                         InputKey(_KeySet.Up, KeyMode.PressDown);
-                        _prevTouchDirection = 8;
+                        _PrevTouchDirection = 8;
                     }
                     else if (touchPosition.y < -0.8f) // down
                     {
                         InputKey(_KeySet.Down, KeyMode.PressDown);
-                        _prevTouchDirection = 2;
+                        _PrevTouchDirection = 2;
                     }
                     else if (touchPosition.x > 0.8f) // right
                     {
                         InputKey(_KeySet.Right, KeyMode.PressDown);
-                        _prevTouchDirection = 6;
+                        _PrevTouchDirection = 6;
                     }
                     else if (touchPosition.x < -0.8f)// left
                     {
                         InputKey(_KeySet.Left, KeyMode.PressDown);
-                        _prevTouchDirection = 4;
+                        _PrevTouchDirection = 4;
                     }
                     else
                     {
                         InputKey(_KeySet.Center, KeyMode.PressDown);
-                        _prevTouchDirection = 5;
+                        _PrevTouchDirection = 5;
                     }
                 }
              }
@@ -129,27 +135,32 @@ namespace KoikatuVR
             {
                 Vector2 touchPosition = device.GetAxis();
                 {
-                    if (_prevTouchDirection == 8) // up
+                    if (_PrevTouchDirection == 8) // up
                     {
                         InputKey(_KeySet.Up, KeyMode.PressUp);
                     }
-                    else if (_prevTouchDirection == 2) // down
+                    else if (_PrevTouchDirection == 2) // down
                     {
                         InputKey(_KeySet.Down, KeyMode.PressUp);
                     }
-                    else if (_prevTouchDirection == 6) // right
+                    else if (_PrevTouchDirection == 6) // right
                     {
                         InputKey(_KeySet.Right, KeyMode.PressUp);
                     }
-                    else if (_prevTouchDirection == 4)// left
+                    else if (_PrevTouchDirection == 4)// left
                     {
                         InputKey(_KeySet.Left, KeyMode.PressUp);
                     }
-                    else if (_prevTouchDirection == 5)
+                    else if (_PrevTouchDirection == 5)
                     {
                         InputKey(_KeySet.Center, KeyMode.PressUp);
                     }
                 }
+            }
+
+            if (_Pl2Cam)
+            {
+                _Interpreter.MovePlayerToCamera();
             }
         }
 
@@ -159,11 +170,23 @@ namespace KoikatuVR
             {
                 switch (keyName)
                 {
+                    case "WALK":
+                        _Interpreter.StartWalking();
+                        break;
+                    case "DASH":
+                        _Interpreter.StartWalking(true);
+                        break;
+                    case "PL2CAM":
+                        _Pl2Cam = true;
+                        break;
                     case "LBUTTON":
                         VR.Input.Mouse.LeftButtonDown();
                         break;
                     case "RBUTTON":
                         VR.Input.Mouse.RightButtonDown();
+                        break;
+                    case "MBUTTON":
+                        VR.Input.Mouse.MiddleButtonDown();
                         break;
                     case "LROTATION":
                     case "RROTATION":
@@ -182,11 +205,23 @@ namespace KoikatuVR
             {
                 switch (keyName)
                 {
+                    case "WALK":
+                        _Interpreter.StopWalking();
+                        break;
+                    case "DASH":
+                        _Interpreter.StopWalking();
+                        break;
+                    case "PL2CAM":
+                        _Pl2Cam = false;
+                        break;
                     case "LBUTTON":
                         VR.Input.Mouse.LeftButtonUp();
                         break;
                     case "RBUTTON":
                         VR.Input.Mouse.RightButtonUp();
+                        break;
+                    case "MBUTTON":
+                        VR.Input.Mouse.MiddleButtonUp();
                         break;
                     case "LROTATION":
                         _Interpreter.RotatePlayer(-45);

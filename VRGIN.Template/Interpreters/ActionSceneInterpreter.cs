@@ -186,7 +186,9 @@ namespace KoikatuVR.Interpreters
                 pos = player.position;
                 pos.y += _IsStanding ? _Settings.StandingCameraPos : _Settings.CrouchingCameraPos;
             }
-            cam.position = pos - (headCam.position - cam.position) + cf * 0.13f; // 首が見えるとうざいのでほんの少し前目
+
+            // 首が見えるとうざいのでほんの少し前目にする
+            cam.position = pos - (headCam.position - cam.position) + cf * 0.13f;
         }
 
         public void MovePlayerToCamera(bool onlyRotation = false)

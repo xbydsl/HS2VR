@@ -66,6 +66,8 @@ namespace KoikatuVR
     {
         public KeySet()
         {
+            Trigger = "WALK";
+            Grip = "PL2CAM";
             Up = "F3";
             Down = "F4";
             Right = "RROTATION";
@@ -73,14 +75,22 @@ namespace KoikatuVR
             Center = "RBUTTON";
         }
 
-        public KeySet(string Up, string Down, string Right, string Left, string Center)
+        public KeySet(string trigger, string grip, string Up, string Down, string Right, string Left, string Center)
         {
+            this.Trigger = trigger;
+            this.Grip = grip;
             this.Up = Up;
             this.Down = Down;
             this.Right = Right;
             this.Left = Left;
             this.Center = Center;
         }
+
+        [System.Xml.Serialization.XmlElement("Trigger")]
+        public String Trigger { get; set; }
+
+        [System.Xml.Serialization.XmlElement("Grip")]
+        public String Grip { get; set; }
 
         [System.Xml.Serialization.XmlElement("Up")]
         public String Up { get; set; }
