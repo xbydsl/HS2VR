@@ -108,7 +108,7 @@ VRSettings.xmlを書き換えることで割り当てを変えることができ
 
 <details><summary>設定例</summary><div>
 (トリガーで歩き、グリップしている間しゃがむ、↑設定/→マップ移動/←ステータス/・右クリ)と
-(トリガーでダッシュ、グリップしている間HMDの位置にキャラを移動、↑左クリ/←→左右回転/・しゃがみ)を↓を押すたびに切り替える
+(トリガーでダッシュ、グリップしている間HMDの位置にキャラを移動、↑左クリ/←→左右回転/・中央クリ)を↓を押すたびに切り替える
     
 ~~~
   <KeySets>
@@ -128,7 +128,7 @@ VRSettings.xmlを書き換えることで割り当てを変えることができ
       <Down>NEXT</Down>
       <Right>RROTATION</Right>
       <Left>LROTATION</Left>
-      <Center>CROUCH</Center>
+      <Center>MBUTTON</Center>
     </KeySet>
   </KeySets>
 ~~~
