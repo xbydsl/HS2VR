@@ -35,8 +35,8 @@
       <HintPath>Libs\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="IllusionPlugin">
-      <HintPath>..\Libs\IPA\IPA\Data\Managed\IllusionPlugin.dll</HintPath>
+    <Reference Include="BepInEx, Version=4.1.0.50, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>Libs\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -47,9 +47,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\VRGIN\Libs\Unity 5.6.5\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\VRGIN\Libs\Unity 5.6.5\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="WindowsInput">
       <HintPath>..\VRGIN\Libs\WindowsInput.dll</HintPath>
@@ -81,6 +83,8 @@
     <None Include="Deploy.props" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Libs\Assembly-CSharp.dll" />
+    <Content Include="Libs\BepInEx.dll" />
     <Content Include="Plugins\Images\icon_school.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -89,17 +93,17 @@
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
     <Message Text="Packaging build..." Importance="normal" />
     <ItemGroup>
+      <PluginFiles Include="$(OutputPath)Plugins\**\*.*" />
+      <UnityLibs Include="$(OutputPath)UnityEngine*.dll" />
       <ManagedLibs Include="$(OutputPath)*.dll" />
-      <IPA Include="..\Libs\IPA\**\*" />
-      <DataFiles Include="$(OutputPath)Data\**\*" />
       <PdbFiles Include="$(OutputPath)*.pdb" />
     </ItemGroup>
     <!-- Copy plugins to the right place -->
-    <Move SourceFiles="@(ManagedLibs)" DestinationFolder="$(OutputPath)Plugins" />
-    <!-- Copy IPA -->
-    <Copy SourceFiles="@(IPA)" DestinationFolder="$(OutputPath)%(RecursiveDir)" />
-    <!-- Move Data stuff into IPA folder -->
-    <Move SourceFiles="@(DataFiles)" DestinationFolder="$(OutputPath)IPA\Data\%(RecursiveDir)" />
+	<Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(OutputPath)BepInEx\%(RecursiveDir)" />
+    <!-- Remove unneeded directory -->
+    <RemoveDir Directories="$(OutputPath)Plugins" />
+    <!-- Copy libraries to the right place -->
+    <Move SourceFiles="@(ManagedLibs)" DestinationFolder="$(OutputPath)BepInEx" />
     <!-- Remove unneeded directory -->
     <RemoveDir Directories="$(OutputPath)Data" />
     <!-- Remove PDB files -->

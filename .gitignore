@@ -34,4 +34,4 @@ sysinfo.txt
 
 # VSfile.
 .vs/
-/VRGIN.Template/Libs/Assembly-CSharp.dll
+/VRGIN.Template/Libs/*.dll

@@ -56,10 +56,8 @@ namespace KoikatuVR.Interpreters
                 GameObject scene = GameObject.Find("ActionScene");
                 _CameraSystem = scene.transform.Find("CameraSystem").gameObject;
 
-                var player = GameObject.Find("ActionScene/Player").GetComponent<ActionGame.Chara.Player>();
-
                 // トイレなどでFPS視点になっている場合にTPS視点に戻す
-                _CameraSystem.GetComponent<ActionGame.CameraStateDefinitionChange>().ModeChange(ActionGame.CameraMode.TPS, player);
+                _CameraSystem.GetComponent<ActionGame.CameraStateDefinitionChange>().ModeChangeForce((ActionGame.CameraMode?) ActionGame.CameraMode.TPS);
                 //scene.GetComponent<ActionScene>().isCursorLock = false;
 
                 // プレイヤーキャラの頭を非表示にする
@@ -188,7 +186,7 @@ namespace KoikatuVR.Interpreters
             }
 
             // 首が見えるとうざいのでほんの少し前目にする
-            cam.position = pos - (headCam.position - cam.position) + cf * 0.13f;
+            cam.position = pos - (headCam.position - cam.position) + cf * 0.23f;
         }
 
         public void MovePlayerToCamera(bool onlyRotation = false)

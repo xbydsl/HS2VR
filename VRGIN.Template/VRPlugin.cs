@@ -1,10 +1,5 @@
-﻿using IllusionPlugin;
-using UnityEngine;
+﻿using BepInEx;
 using System;
-using System.IO;
-using System.Collections;
-using System.Xml.Serialization;
-using VRGIN.Core;
 using VRGIN.Helpers;
 
 namespace KoikatuVR
@@ -13,7 +8,8 @@ namespace KoikatuVR
     /// <summary>
     /// This is an example for a VR plugin. At the same time, it also functions as a generic one.
     /// </summary>
-    public class VRPlugin : IPlugin
+    [BepInPlugin(GUID: "KoikatsuVR.unofficial", Name: "KoikatuVR", Version: "0.7")]
+    public class VRPlugin : BaseUnityPlugin
     {
 
         /// <summary>
@@ -38,7 +34,7 @@ namespace KoikatuVR
         /// <summary>
         /// Determines when to boot the VR code. In most cases, it makes sense to do the check as described here.
         /// </summary>
-        public void OnApplicationStart()
+        void Awake()
         {
             bool vrDeactivated = Environment.CommandLine.Contains("--novr");
             bool vrActivated = Environment.CommandLine.Contains("--vr");
@@ -52,17 +48,5 @@ namespace KoikatuVR
 				VRLoader.Create(false);
             }
         }
-
-
-
-
-
-        #region Unused
-        public void OnApplicationQuit() { }
-        public void OnFixedUpdate() { }
-        public void OnLevelWasInitialized(int level) { }
-        public void OnLevelWasLoaded(int level) { }
-        public void OnUpdate() { }
-        #endregion
     }
 }
