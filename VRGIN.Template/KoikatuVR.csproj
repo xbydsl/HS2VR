@@ -94,7 +94,6 @@
     <Message Text="Packaging build..." Importance="normal" />
     <ItemGroup>
       <PluginFiles Include="$(OutputPath)Plugins\**\*.*" />
-      <UnityLibs Include="$(OutputPath)UnityEngine*.dll" />
       <ManagedLibs Include="$(OutputPath)*.dll" />
       <PdbFiles Include="$(OutputPath)*.pdb" />
     </ItemGroup>
