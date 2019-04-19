@@ -94,11 +94,13 @@
     <Message Text="Packaging build..." Importance="normal" />
     <ItemGroup>
       <PluginFiles Include="$(OutputPath)Plugins\**\*.*" />
+      <DataPluginFiles Include="$(OutputPath)Data\Plugins\**\*.*" />
       <ManagedLibs Include="$(OutputPath)*.dll" />
       <PdbFiles Include="$(OutputPath)*.pdb" />
     </ItemGroup>
     <!-- Copy plugins to the right place -->
 	<Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(OutputPath)BepInEx\%(RecursiveDir)" />
+	<Copy SourceFiles="@(DataPluginFiles)" DestinationFolder="$(OutputPath)Koikatu_Data\Plugins\%(RecursiveDir)" />
     <!-- Remove unneeded directory -->
     <RemoveDir Directories="$(OutputPath)Plugins" />
     <!-- Copy libraries to the right place -->
