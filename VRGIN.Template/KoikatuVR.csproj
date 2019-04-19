@@ -35,7 +35,7 @@
       <HintPath>Libs\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="BepInEx, Version=4.1.0.50, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BepInEx">
       <HintPath>Libs\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
