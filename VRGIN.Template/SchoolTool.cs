@@ -102,22 +102,24 @@ namespace KoikatuVR
             {
                 Vector2 touchPosition = device.GetAxis();
                 {
-                    if (touchPosition.y > 0.8f) // up
+                    float threshold = _Settings.TouchpadThreshold;
+
+                    if (touchPosition.y > threshold) // up
                     {
                         InputKey(_KeySet.Up, KeyMode.PressDown);
                         _PrevTouchDirection = 8;
                     }
-                    else if (touchPosition.y < -0.8f) // down
+                    else if (touchPosition.y < -threshold) // down
                     {
                         InputKey(_KeySet.Down, KeyMode.PressDown);
                         _PrevTouchDirection = 2;
                     }
-                    else if (touchPosition.x > 0.8f) // right
+                    else if (touchPosition.x > threshold) // right
                     {
                         InputKey(_KeySet.Right, KeyMode.PressDown);
                         _PrevTouchDirection = 6;
                     }
-                    else if (touchPosition.x < -0.8f)// left
+                    else if (touchPosition.x < -threshold)// left
                     {
                         InputKey(_KeySet.Left, KeyMode.PressDown);
                         _PrevTouchDirection = 4;
@@ -224,10 +226,10 @@ namespace KoikatuVR
                         VR.Input.Mouse.MiddleButtonUp();
                         break;
                     case "LROTATION":
-                        _Interpreter.RotatePlayer(-45);
+                        _Interpreter.RotatePlayer(-_Settings.RotationAngle);
                         break;
                     case "RROTATION":
-                        _Interpreter.RotatePlayer(45);
+                        _Interpreter.RotatePlayer(_Settings.RotationAngle);
                         break;
                     case "NEXT":
                         ChangeKeySet();

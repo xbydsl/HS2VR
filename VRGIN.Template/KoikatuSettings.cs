@@ -59,6 +59,12 @@ namespace KoikatuVR
 
         public float StandUpThrethould { get { return _StandUpThrethould; } set { _StandUpThrethould = value; } }
         private float _StandUpThrethould = -0.55f;
+
+        public float TouchpadThreshold { get { return _TouchpadThreshold; } set { _TouchpadThreshold = value; } }
+        private float _TouchpadThreshold = 0.8f;
+
+        public float RotationAngle { get { return _RotationAngle; } set { _RotationAngle = value; } }
+        private float _RotationAngle = 45f;
     }
 
     [XmlRoot("KeySet")]
