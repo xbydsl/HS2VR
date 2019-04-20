@@ -1,3 +1,11 @@
+# Ooetksh 追記
+
+当 KoikatuVR は BepInEx 用のプラグインです（*IPAは不要*）。
+
+[Releases](https://github.com/Ooetksh/KoikatuVR/releases) ページをご覧ください。
+
+---
+
 obtdai様版の[VRGIN.Template](https://github.com/obtdai/VRGIN.Template)を触ってなんとかコイカツ本編をVRで操作できるように**したい**もの
 
 極めて実験的なバージョンです。いろいろと不便ですし、不具合が起こる可能性も高いですので、そういったことをご理解いただいた上で自己責任でお願いします。
