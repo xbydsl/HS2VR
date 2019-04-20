@@ -8,7 +8,7 @@ namespace KoikatuVR
     /// <summary>
     /// This is an example for a VR plugin. At the same time, it also functions as a generic one.
     /// </summary>
-    [BepInPlugin(GUID: "KoikatsuVR.unofficial", Name: "KoikatuVR", Version: "0.7.1")]
+    [BepInPlugin(GUID: "KoikatsuVR.unofficial", Name: "KoikatuVR", Version: "0.7.1.1")]
     public class VRPlugin : BaseUnityPlugin
     {
 
@@ -27,7 +27,7 @@ namespace KoikatuVR
         {
             get
             {
-                return "0.7.1";
+                return "0.7.1.1";
             }
         }
 
