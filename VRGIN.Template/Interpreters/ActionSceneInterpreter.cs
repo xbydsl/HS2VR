@@ -61,7 +61,8 @@ namespace KoikatuVR.Interpreters
                 //scene.GetComponent<ActionScene>().isCursorLock = false;
 
                 // プレイヤーキャラの頭を非表示にする
-                pl.transform.Find("p_cf_body_bone_low/cf_j_root").gameObject.SetActive(false);
+                if (pl.transform.Find("p_cf_body_bone/cf_j_root") is Transform t1) t1.gameObject.SetActive(false);
+                else if (pl.transform.Find("p_cf_body_bone_low/cf_j_root") is Transform t2) t2.gameObject.SetActive(false);
 
                 // カメラをプレイヤーの位置に移動
                 MoveCameraToPlayer();
@@ -99,6 +100,14 @@ namespace KoikatuVR.Interpreters
 
         public override void OnUpdate()
         {
+            var player = GameObject.Find("ActionScene/Player");
+            var camera = StrayTech.MonoBehaviourSingleton<StrayTech.CameraSystem>.Instance.CurrentCamera;
+            if (player != null && camera != null)
+            {
+                camera.transform.rotation = player.transform.rotation;
+                camera.transform.position = player.transform.position;
+            }
+
             GameObject map = GameObject.Find("Map");
 
             if (map != _Map)
@@ -158,7 +167,9 @@ namespace KoikatuVR.Interpreters
         public void MoveCameraToPlayer(bool onlyPosition = false)
         {
             var player = GameObject.Find("ActionScene/Player").transform;
-            var playerHead = player.transform.Find("chaM_001/BodyTop/p_cf_body_bone_low/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head");
+
+            var playerHead = player.transform.Find("chaM_001/BodyTop/p_cf_body_bone/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head");
+            playerHead = playerHead ?? player.transform.Find("chaM_001/BodyTop/p_cf_body_bone_low/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head");
             //var playerHead = GameObject.Find("ActionScene/Player/chaM_001/BodyTop/p_cf_body_bone_low/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head").transform;
             var cam = GameObject.Find("VRGIN_Camera (origin)").transform;
             var headCam = GameObject.Find("VRGIN_Camera (origin)/VRGIN_Camera (eye)/VRGIN_Camera (head)").transform;
@@ -192,7 +203,8 @@ namespace KoikatuVR.Interpreters
         public void MovePlayerToCamera(bool onlyRotation = false)
         {
             var player = GameObject.Find("ActionScene/Player").transform;
-            var playerHead = player.transform.Find("chaM_001/BodyTop/p_cf_body_bone_low/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head");
+            var playerHead = player.transform.Find("chaM_001/BodyTop/p_cf_body_bone/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head");
+            playerHead = playerHead ?? player.transform.Find("chaM_001/BodyTop/p_cf_body_bone_low/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head");
             //var playerHead = GameObject.Find("ActionScene/Player/chaM_001/BodyTop/p_cf_body_bone_low/cf_j_root/cf_n_height/cf_j_hips/cf_j_spine01/cf_j_spine02/cf_j_spine03/cf_j_neck/cf_j_head/cf_s_head").transform;
             //var cam = GameObject.Find("VRGIN_Camera (origin)").transform;
             var headCam = GameObject.Find("VRGIN_Camera (origin)/VRGIN_Camera (eye)/VRGIN_Camera (head)").transform;
@@ -210,7 +222,7 @@ namespace KoikatuVR.Interpreters
             }
         }
 
-        public void RotatePlayer(int angle)
+        public void RotatePlayer(float angle)
         {
             var player = GameObject.Find("ActionScene/Player").transform;
             player.Rotate(Vector3.up * angle);
