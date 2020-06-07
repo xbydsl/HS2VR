@@ -13,7 +13,7 @@ using VRGIN.Core;
 using VRGIN.Helpers;
 using static VRGIN.Visuals.GUIMonitor;
 
-namespace KoikatuVR
+namespace HS2VR
 {
     /// <summary>
     /// Class that holds settings for VR. Saved as an XML file.
@@ -24,12 +24,12 @@ namespace KoikatuVR
     /// <code>[XmlRoot("Settings")]</code>
     /// </summary>
     [XmlRoot("Settings")]
-    public class KoikatuSettings : VRSettings
+    public class HS2VRSettings : VRSettings
     {
         // XMLSerializerは配列にデフォルト値をつけると、指定値とデフォルト値の両方を含む配列にしてしまうので
-        public static KoikatuSettings Load(string path)
+        public static HS2VRSettings Load(string path)
         {
-            KoikatuSettings settings = VRSettings.Load<KoikatuSettings>(path);
+            HS2VRSettings settings = VRSettings.Load<HS2VRSettings>(path);
             if (settings.KeySets.Count == 0)
             {
                 settings.KeySets = new List<KeySet> { new KeySet() };

@@ -1,21 +1,28 @@
-﻿
-namespace KoikatuVR.Interpreters
+﻿using UnityEngine;
+using VRGIN.Core;
+using Valve.VR;
+
+namespace HS2VR.Interpreters
 {
     class OtherSceneInterpreter : SceneInterpreter
     {
         public override void OnStart()
         {
-            // nothing to do.
+            base.OnStart();
+            VRLog.Info("Starting OtherSceneInterpreter.");
         }
-
+        public override void OnEnable()
+        {
+            base.OnEnable();
+        }
         public override void OnDisable()
         {
-            // nothing to do.
+            base.OnDisable();
         }
 
         public override void OnUpdate()
         {
-            // nothing to do.
+            base.OnUpdate();
         }
     }
 }

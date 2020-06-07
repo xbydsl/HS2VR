@@ -7,14 +7,14 @@ using VRGIN.Core;
 using VRGIN.Helpers;
 using static SteamVR_Controller;
 using WindowsInput.Native;
-using KoikatuVR.Interpreters;
+using HS2VR.Interpreters;
 
-namespace KoikatuVR
+namespace HS2VR
 {
     public class SchoolTool : Tool
     {
         private ActionSceneInterpreter _Interpreter;
-        private KoikatuSettings _Settings;
+        private HS2VRSettings _Settings;
         private KeySet _KeySet;
         private int _KeySetIndex = 0;
 
@@ -42,7 +42,7 @@ namespace KoikatuVR
         {
             base.OnAwake();
 
-            _Settings = (VR.Context.Settings as KoikatuSettings);
+            _Settings = (VR.Context.Settings as HS2VRSettings);
             _KeySet = _Settings.KeySets[0];
         }
 
@@ -68,10 +68,10 @@ namespace KoikatuVR
             _Interpreter = (VR.Interpreter as KoikatuInterpreter).SceneInterpreter as ActionSceneInterpreter;
         }
 
-        protected override void OnLevel(int level)
-        {
-            base.OnLevel(level);
-        }
+        // protected override void OnLevel(int level)
+        // {
+        //     base.OnLevel(level);
+        // }
 
         protected override void OnUpdate()
         {
@@ -170,6 +170,7 @@ namespace KoikatuVR
         {
             if (mode == KeyMode.PressDown)
             {
+                VRLog.Info("Key {0} down.", keyName);
                 switch (keyName)
                 {
                     case "WALK":
@@ -205,6 +206,7 @@ namespace KoikatuVR
             }
             else
             {
+                VRLog.Info("Key {0} up.", keyName);
                 switch (keyName)
                 {
                     case "WALK":

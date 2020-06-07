@@ -2,13 +2,13 @@
 using System;
 using VRGIN.Helpers;
 
-namespace KoikatuVR
+namespace HS2VR
 {
 
     /// <summary>
     /// This is an example for a VR plugin. At the same time, it also functions as a generic one.
     /// </summary>
-    [BepInPlugin(GUID: "KoikatsuVR.unofficial", Name: "KoikatuVR", Version: "0.7.1.1")]
+    [BepInPlugin(GUID: "HS2VR.unofficial", Name: "HS2VR", Version: "0.0.0.1")]
     public class VRPlugin : BaseUnityPlugin
     {
 
@@ -19,7 +19,7 @@ namespace KoikatuVR
         {
             get
             {
-                return "KoikatuVR";
+                return "HS2VR";
             }
         }
 
@@ -27,7 +27,7 @@ namespace KoikatuVR
         {
             get
             {
-                return "0.7.1.1";
+                return "0.0.0.1";
             }
         }
 
@@ -36,6 +36,8 @@ namespace KoikatuVR
         /// </summary>
         void Awake()
         {
+            VRPatcher.Patch();
+
             bool vrDeactivated = Environment.CommandLine.Contains("--novr");
             bool vrActivated = Environment.CommandLine.Contains("--vr");
 

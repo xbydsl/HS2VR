@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
-using VRGIN.Controls.Speech;
+//using VRGIN.Controls.Speech;
 using VRGIN.Core;
 using VRGIN.Helpers;
 using VRGIN.Visuals;
 
-namespace KoikatuVR
+namespace HS2VR
 {
     /// <summary>
     /// Context class that can be serialized as an XML. Normally, you would implement this yourself and simply override getters with sensible values.
@@ -24,7 +24,7 @@ namespace KoikatuVR
         {
             // We'll keep those always the same
             _Materials = new DefaultMaterialPalette();
-            _Settings = KoikatuSettings.Load("VRSettings.xml");
+            _Settings = HS2VRSettings.Load("VRSettings.xml");
 
             // Set defaults
             ConfineMouse = true;
@@ -50,8 +50,8 @@ namespace KoikatuVR
         [XmlIgnore]
         public VRSettings Settings { get { return _Settings; } }
 
-        [XmlIgnore]
-        public Type VoiceCommandType { get { return typeof(VoiceCommand); } }
+        // [XmlIgnore]
+        // public Type VoiceCommandType { get { return typeof(VoiceCommand); } }
 
         public bool ConfineMouse { get; set; }
 
@@ -82,5 +82,9 @@ namespace KoikatuVR
         public float NearClipPlane { get; set; }
 
         public GUIType PreferredGUI { get; set; }
+
+        public string Version { get; set; }
+        public float MaxFarClipPlane { get; set; }
+        public int GuiMaterialRenderQueue { get; set; }
     }
 }

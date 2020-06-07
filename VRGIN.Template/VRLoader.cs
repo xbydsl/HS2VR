@@ -4,9 +4,9 @@ using System.Xml.Serialization;
 using UnityEngine;
 using System.Collections;
 using VRGIN.Core;
-using KoikatuVR.Interpreters;
+using HS2VR.Interpreters;
 
-namespace KoikatuVR
+namespace HS2VR
 {
 	class VRLoader : ProtectedBehaviour
 	{
@@ -96,16 +96,16 @@ namespace KoikatuVR
 			bool vrMode = newDevice != DeviceNone;
 
 			// 指定されたデバイスの読み込み.
-			UnityEngine.VR.VRSettings.LoadDeviceByName(newDevice);
+			UnityEngine.XR.XRSettings.LoadDeviceByName(newDevice);
 			// 次のフレームまで待つ.
 			yield return null;
 			// VRモードを有効にする.
-			UnityEngine.VR.VRSettings.enabled = vrMode;
+			UnityEngine.XR.XRSettings.enabled = vrMode;
 			// 次のフレームまで待つ.
 			yield return null;
 
 			// デバイスの読み込みが完了するまで待つ.
-			while (UnityEngine.VR.VRSettings.loadedDeviceName != newDevice || UnityEngine.VR.VRSettings.enabled != vrMode)
+			while (UnityEngine.XR.XRSettings.loadedDeviceName != newDevice || UnityEngine.XR.XRSettings.enabled != vrMode)
 			{
 				yield return null;
 			}
@@ -116,7 +116,7 @@ namespace KoikatuVR
 				// Boot VRManager!
 				// Note: Use your own implementation of GameInterpreter to gain access to a few useful operatoins
 				// (e.g. characters, camera judging, colliders, etc.)
-				VRManager.Create<KoikatuInterpreter>(CreateContext("VRContext.xml"));
+				VRManager.Create<HS2Interpreter>(CreateContext("VRContext.xml"));
 				VR.Manager.SetMode<GenericStandingMode>();
 			}
 		}

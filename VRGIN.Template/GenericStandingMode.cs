@@ -8,7 +8,7 @@ using VRGIN.Core;
 using VRGIN.Helpers;
 using VRGIN.Modes;
 
-namespace KoikatuVR
+namespace HS2VR
 {
     class GenericStandingMode : StandingMode
     {
@@ -23,7 +23,7 @@ namespace KoikatuVR
         {
             get
             {
-                return base.Tools.Concat(new Type[] { typeof(MenuTool), typeof(WarpTool), typeof(SchoolTool)});
+                return base.Tools.Concat(new Type[] { typeof(MenuTool), typeof(WarpTool) , /*typeof(SchoolTool)*/});
             }
         }
     }

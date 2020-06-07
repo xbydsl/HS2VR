@@ -3,10 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoikatuVR", "VRGIN.Template\KoikatuVR.csproj", "{1F634B93-F4C6-45E9-894D-2F3556A74D67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HS2VR", "VRGIN.Template\HS2VR.csproj", "{1F634B93-F4C6-45E9-894D-2F3556A74D67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRGIN", "VRGIN\VRGIN\VRGIN.csproj", "{22788A2C-7695-4A6A-A9F0-115AB9A05FD4}"
-EndProject
+# Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRGIN", "VRGIN\VRGIN\VRGIN.csproj", "{22788A2C-7695-4A6A-A9F0-115AB9A05FD4}"
+# EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

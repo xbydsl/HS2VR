@@ -1,3 +1,42 @@
+# Instructions
+
+Credit for the underlying library (VRGIN) goes to Eusth (https://github.com/Eusth/VRGIN) and Ooetksh for their AI-Shoujo version.
+The present Honey Select 2 VR mod is based off (https://github.com/Ooetksh/KoikatuVR). 
+
+Enable VR (from https://github.com/vrhth/KoikatuVR):
+
+- Get UABE (https://github.com/DerPopo/UABE).
+- Open HoneySelect2_Data/globalgamemanagers
+- Find the asset of Type BuildSettings
+- Export Dump
+- Open the exported dump with a text editor and change the lines
+
+```
+0 vector enabledVRDevices
+0 Array Array (0 items)
+0 int size = 0
+```
+to
+```
+0 vector enabledVRDevices
+0 Array Array (2 items)
+0 int size = 2
+[0]
+1 string data = "None"
+[1]
+1 string data = "OpenVR"
+```
+- Import Dump and save.
+
+To run Honey Select 2 with VR you need Steam VR running. The first time you also need to lunch HoneySelect2.exe with the --vr flag.
+
+The default IPD scale is too small, so I'd recommend setting IPDScale in VRSettings.xml to something like 10. Also set ApplyEffect to true for pretty graphics. Performance is ok if SSR is disabled.
+
+Note that this is a hacked-together mess, so no guarantees that this works on your machine. 
+
+## Controls
+Beyond the usual `VRGIN` controls, moving the right controller touch pad up/down acts as mouse wheel up/down. 
+
 # Ooetksh 追記
 
 当 KoikatuVR は BepInEx 用のプラグインです（*IPAは不要*）。
