@@ -26,6 +26,12 @@ namespace HS2VR
     [XmlRoot("Settings")]
     public class HS2VRSettings : VRSettings
     {
+        public HS2VRSettings()
+        {
+            // Overwrite defaults
+            this.IPDScale = 10f;
+            this.GrabRotationImmediateMode = false;
+        }
         // XMLSerializerは配列にデフォルト値をつけると、指定値とデフォルト値の両方を含む配列にしてしまうので
         public static HS2VRSettings Load(string path)
         {
