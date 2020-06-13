@@ -82,7 +82,8 @@
       <HintPath>..\VRGIN\Libs\WindowsInput.dll</HintPath>
     </Reference>
     <Reference Include="VRGIN">
-      <HintPath>..\..\AIS_VRGIN\VRGIN.dll</HintPath>
+    <!-- This is a patched version of the AI-Shoujo version -->
+      <HintPath>Libs\VRGIN.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +111,10 @@
     <None Include="Deploy.props" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Libs\Assembly-CSharp.dll" />
-    <Content Include="Libs\BepInEx.dll" />
     <Content Include="Plugins\Images\icon_play.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Plugins\openvr_api.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
