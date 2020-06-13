@@ -43,22 +43,22 @@ namespace HS2VR
             
             if (vrActivated || (!vrDeactivated && SteamVRDetector.IsRunning))
             {
-				VRLoader.Create(true);
+                VRLoader.Create(true);
             }
-			else
-			{
+            else
+            {
                 VRLog.Info("Not using VR");
                 // Don't do anything
-				//VRLoader.Create(false);
+                //VRLoader.Create(false);
             }
         }
 
         public void Update()
         {
             // Vector3 head_pos = UnityEngine.XR.InputTracking.GetLocalPosition(UnityEngine.XR.XRNode.CenterEye);
-			// VRLog.Info("XRNode.CenterEye: {0}", head_pos);
+            // VRLog.Info("XRNode.CenterEye: {0}", head_pos);
             // foreach (Camera camera in Camera.allCameras)
-			// {
+            // {
             //     VRLog.Info("Camera {0}: {1}", camera.name, camera.transform.position);
             //     //UnityEngine.XR.XRDevice.DisableAutoXRCameraTracking(camera, true);
             // }

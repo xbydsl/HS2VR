@@ -44,11 +44,17 @@ If SteamVR is running, the game should start in VR mode. If you need to force th
 
 ## Controls
 The controls follow the `VRGIN` setup: 
-- The B/Y buttons swtich the current tool.
-- The Menu tool gives access to the UI. Use the grip button to grap the UI plane and reposition it.
-- The Warp tool allows movement. Grip button moves the camera, Grip+Trigger rotates it. Clicking the Touchpad warps the camera to the indicated location.
-- The Play tool allows for interaction during H-Scenes. For now, moving the Touchpad up/down acts as the mouse wheel for starting, speed up, and speed down. Pressing Touchpad left/right cycles through the finish options, pressing in the center actives the current active option.
+- The B/Y buttons switch the current tool.
+- The menu tool gives access to the UI. Use the grip button to grap the UI plane and reposition it.
+- The warp tool allows movement. Grip button moves the camera, grip+trigger rotates it. Clicking the touchpad warps the camera to the indicated location.
+- The play tool allows for interaction during H-Scenes. For now, moving the touchpad up/down acts as the mouse wheel for starting, speed up, and speed down. Pressing touchpad left/right cycles through the finish options, pressing in the center actives the current active option.
 
 # Building from source
 
 The mod currently uses a patched `VRGIN.dll` from the AI-Shoujo VR mod by Ooetksh, not the included git submodule. Once that version of VRGIN makes it onto github, the repo can be updated to include it.
+
+# Known issues
+- Camera placement is buggy. The effects of Unity XR input tracking, SteamVR, and whatever VRGIN is doing on the various cameras is less than clear to me. If someone knows how that stuff works, please let me know.
+- During scene transitions seizure-iduction flickering is happening. Until that is fixed, just close your eyes ¯\\_(ツ)_/¯.
+- Mirrors don't work properly. 
+- Resolution of UI is crap.
