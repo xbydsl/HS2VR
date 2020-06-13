@@ -32,23 +32,23 @@ namespace HS2VR.Interpreters
         {
             base.OnUpdate();
 
-            Vector2 touchpad_direction = VR.Controller.Right.Input.GetAxis(EVRButtonId.k_EButton_Axis0);
-            //VRLog.Info("Touchpad direction: {0}", touchpad_direction);
-            if(touchpad_direction.y > 0.5f) {
-                // Up
-               VRLog.Info("Scroll up.");
-               SendInputHandler.MouseWheel(100);
-            }
-            else if(touchpad_direction.y < -0.5f) {
-                // Down
-                VRLog.Info("Scroll down.");
-                SendInputHandler.MouseWheel(-100);
-            }
+            // Vector2 touchpad_direction = VR.Controller.Right.Input.GetAxis(EVRButtonId.k_EButton_Axis0);
+            // //VRLog.Info("Touchpad direction: {0}", touchpad_direction);
+            // if(touchpad_direction.y > 0.5f) {
+            //     // Up
+            //    VRLog.Info("Scroll up.");
+            //    SendInputHandler.MouseWheel(10);
+            // }
+            // else if(touchpad_direction.y < -0.5f) {
+            //     // Down
+            //     VRLog.Info("Scroll down.");
+            //     SendInputHandler.MouseWheel(-10);
+            // }
 
-            if(VR.Controller.Right.Input.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad)) {
-                VRLog.Info("Pressed touchpad.");
-                _HScene.ctrlFlag.click = HSceneFlagCtrl.ClickKind.FinishBefore;
-            }
+            // if(VR.Controller.Right.Input.GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad)) {
+            //     VRLog.Info("Pressed touchpad.");
+            //     _HScene.ctrlFlag.click = HSceneFlagCtrl.ClickKind.FinishBefore;
+            // }
             
 
             // if (_NeedsResetCamera)

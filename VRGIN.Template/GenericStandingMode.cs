@@ -23,7 +23,7 @@ namespace HS2VR
         {
             get
             {
-                return base.Tools.Concat(new Type[] { typeof(MenuTool), typeof(WarpTool) , /*typeof(SchoolTool)*/});
+                return base.Tools.Concat(new Type[] { typeof(PlayTool)});
             }
         }
     }

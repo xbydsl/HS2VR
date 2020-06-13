@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UnityEngine;
+
 using System.Collections;
 using VRGIN.Core;
 using HS2VR.Interpreters;
@@ -111,8 +113,22 @@ namespace HS2VR
 			}
 
 
+			//UnityEngine.XR.XRSettings.gameViewRenderMode = UnityEngine.XR.GameViewRenderMode.BothEyes;
+
+			List<UnityEngine.XR.XRNodeState> states = new List<UnityEngine.XR.XRNodeState>();
+			UnityEngine.XR.InputTracking.GetNodeStates(states);
+			foreach(UnityEngine.XR.XRNodeState state in states)
+			{
+				string name = UnityEngine.XR.InputTracking.GetNodeName(state.uniqueID);
+				Vector3 pos = new Vector3();
+				bool got_pos = state.TryGetPosition(out pos);
+				VRLog.Info("XRNode {0}, position available {1} {2}", name, got_pos, pos);
+			}
+
 			if (vrMode)
 			{
+				VRPatcher.Patch();
+
 				// Boot VRManager!
 				// Note: Use your own implementation of GameInterpreter to gain access to a few useful operatoins
 				// (e.g. characters, camera judging, colliders, etc.)
@@ -120,5 +136,6 @@ namespace HS2VR
 				VR.Manager.SetMode<GenericStandingMode>();
 			}
 		}
+
 	}
 }

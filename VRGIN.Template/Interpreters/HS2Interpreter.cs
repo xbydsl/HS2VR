@@ -30,14 +30,14 @@ namespace HS2VR.Interpreters
 
 
         private int _SceneType;
-        public SceneInterpreter SceneInterpreter;
+        public SceneInterpreter currentSceneInterpreter;
 
         protected override void OnAwake()
         {
             base.OnAwake();
 
             _SceneType = scenes["NoScene"];
-            SceneInterpreter = new OtherSceneInterpreter();
+            currentSceneInterpreter = new OtherSceneInterpreter();
         }
 
         protected override void OnUpdate()
@@ -45,7 +45,11 @@ namespace HS2VR.Interpreters
             base.OnUpdate();
 
             DetectScene();
-            SceneInterpreter.OnUpdate();
+            currentSceneInterpreter.OnUpdate();
+        }
+
+        public bool isHScene { 
+            get { return _SceneType == scenes["HScene"]; }
         }
 
         // 前回とSceneが変わっていれば切り替え処理をする
@@ -140,12 +144,12 @@ namespace HS2VR.Interpreters
             if (nextSceneType != _SceneType)
             {
                 VRLog.Info("Changing scenes.");
-                SceneInterpreter.OnDisable();
+                currentSceneInterpreter.OnDisable();
 
                 _SceneType = nextSceneType;
-                SceneInterpreter = nextInterpreter;
-                SceneInterpreter.OnStart();
-                SceneInterpreter.OnEnable();
+                currentSceneInterpreter = nextInterpreter;
+                currentSceneInterpreter.OnStart();
+                currentSceneInterpreter.OnEnable();
             }
         }
     }
