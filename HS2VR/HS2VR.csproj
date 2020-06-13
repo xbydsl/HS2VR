@@ -86,14 +86,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <!-- <Compile Include="Interpreters\ActionSceneInterpreter.cs" /> -->
     <Compile Include="ConfigurableContext.cs" />
     <Compile Include="GenericSeatedMode.cs" />
     <Compile Include="GenericStandingMode.cs" />
     <Compile Include="Interpreters\HSceneInterpreter.cs" />
     <Compile Include="Interpreters\HS2Interpreter.cs" />
     <Compile Include="Interpreters\OtherSceneInterpreter.cs" />
-    <!-- <Compile Include="Interpreters\NightMenuSceneInterpreter.cs" /> -->
     <Compile Include="Interpreters\SceneInterpreter.cs" />
     <Compile Include="VRLoader.cs" />
     <Compile Include="VRPlugin.cs" />
