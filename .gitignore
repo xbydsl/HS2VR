@@ -34,4 +34,7 @@ sysinfo.txt
 
 # VSfile.
 .vs/
-/VRGIN.Template/Libs/*.dll
+.vscode/
+/HS2VR/Libs/*.dll
+
+release

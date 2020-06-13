@@ -10,7 +10,7 @@ namespace HS2VR
     /// <summary>
     /// This is an example for a VR plugin. At the same time, it also functions as a generic one.
     /// </summary>
-    [BepInPlugin(GUID: "HS2VR.unofficial", Name: "HS2VR", Version: "0.0.1.0")]
+    [BepInPlugin(GUID: "HS2VR.unofficial", Name: "HS2VR", Version: "0.0.2.0")]
     public class VRPlugin : BaseUnityPlugin
     {
 
@@ -29,7 +29,7 @@ namespace HS2VR
         {
             get
             {
-                return "0.0.1.0";
+                return "0.0.2.0";
             }
         }
 
