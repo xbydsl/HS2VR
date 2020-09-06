@@ -1,13 +1,13 @@
 # About
 
-This is a hack to get VR functionality into Honey Select 2, since the offical VR mode hasn't been released yet. 
+This is a hack to get VR functionality into Honey Select 2, since the offical VR mode hadn't been released yet. Unless someone makes a proper release of VRGIN that works with HS2, consider this project abandoned.
 
 Credit for the underlying library (VRGIN) goes to Eusth (https://github.com/Eusth/VRGIN) and Ooetksh for their AI-Shoujo version.
 The present Honey Select 2 VR mod is based off (https://github.com/Ooetksh/KoikatuVR). 
 
 # Installation
 ## Enabling VR
-The current build of HS2 doesn't have the Unity VR mode enabled. To enable VR, follow these steps (taken from https://github.com/vrhth/KoikatuVR):
+**This may not be necessary anymore now that native VR is supported but I haven't tested this yet.** The current build of HS2 doesn't have the Unity VR mode enabled. To enable VR, follow these steps (taken from https://github.com/vrhth/KoikatuVR):
 
 - Get UABE (https://github.com/DerPopo/UABE).
 - Open `HoneySelect2_Data/globalgamemanagers`
