@@ -104,9 +104,3 @@ The controls follow the `VRGIN` setup:
 # Building from source
 
 The mod currently uses a patched `VRGIN.dll` from the AI-Shoujo VR mod by Ooetksh, not the included git submodule. Once that version of VRGIN makes it onto github, the repo can be updated to include it.
-
-# Known issues
-- Camera placement is buggy. The effects of Unity XR input tracking, SteamVR, and whatever VRGIN is doing on the various cameras is less than clear to me. If someone knows how that stuff works, please let me know.
-- During scene transitions seizure-iduction flickering is happening. Until that is fixed, just close your eyes ¯\\_(ツ)_/¯.
-- Mirrors don't work properly. 
-- Resolution of UI is crap.
