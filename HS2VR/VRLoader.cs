@@ -133,9 +133,21 @@ namespace HS2VR
                 // Note: Use your own implementation of GameInterpreter to gain access to a few useful operatoins
                 // (e.g. characters, camera judging, colliders, etc.)
                 VRManager.Create<HS2Interpreter>(CreateContext("VRContext.xml"));
-                VR.Manager.SetMode<GenericStandingMode>();
+                if (((HS2VRSettings)VR.Settings).DefaultMode.Equals("Seated"))
+                {
+                    VR.Manager.SetMode<GenericSeatedMode>();
+                }
+                else
+                {
+                    VR.Manager.SetMode<GenericStandingMode>();
+                }
+                
             }
         }
+
+      
+
+       
 
     }
 }

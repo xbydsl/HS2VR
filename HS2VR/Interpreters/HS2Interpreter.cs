@@ -52,38 +52,11 @@ namespace HS2VR.Interpreters
             get { return _SceneType == scenes["HScene"]; }
         }
 
-        // 前回とSceneが変わっていれば切り替え処理をする
         private void DetectScene()
         {
             int nextSceneType = _SceneType;
             SceneInterpreter nextInterpreter = null;
 
-            //VRLog.Info("Current scene: {0}",  SceneManager.GetActiveScene().name);
-            // foreach (KeyValuePair<string, int> scene in scenes)
-            // {
-            //     if (GameObject.Find(scene.Key) != null)
-            //     {
-            //         VRLog.Info("Currently in scene {0} ({1})", scene.Key, scene.Value);
-            //         // if (_SceneType != scene.Value)
-            //         // {
-            //         //     VRLog.Info("Switching scenes from {0}", _SceneType);
-            //         //     nextSceneType = scene.Value;
-            //         // }
-            //         //break;
-            //     }
-            // }
-            //nextInterpreter = new OtherSceneInterpreter();
-
-
-            // if (GameObject.Find("TalkScene") != null)
-            // {
-            //     if (_SceneType != TalkScene)
-            //     {
-            //         nextSceneType = TalkScene;
-            //         //nextInterpreter = new TalkSceneInterpreter(); 特有の処理がないため不要
-            //         VRLog.Info("Start TalkScene");
-            //     }
-            // }
 
             if (GameObject.Find("HScene") != null)
             {

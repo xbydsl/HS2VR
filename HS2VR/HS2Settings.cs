@@ -48,6 +48,15 @@ namespace HS2VR
         public List<KeySet> KeySets { get { return _KeySets; } set { _KeySets = value; } }
         private List<KeySet> _KeySets = null;
 
+        private string _DefaultMode = "Seated";
+        public string DefaultMode {  get { return _DefaultMode;  } set { _DefaultMode = value; } }
+
+        private float _SeatedDialogueHeightAdjustment = 3.0f;
+        public float SeatedDialogueHeightAdjustment { get { return _SeatedDialogueHeightAdjustment; } set { _SeatedDialogueHeightAdjustment = value; } }
+
+        private float _StandingDialogueHeightAdjustment = 3.0f;
+        public float StandingDialogueHeightAdjustment { get { return _StandingDialogueHeightAdjustment; } set { _StandingDialogueHeightAdjustment = value; } }
+
         public bool UsingHeadPos { get { return _UsingHeadPos; } set { _UsingHeadPos = value; } }
         private bool _UsingHeadPos = false;
 
