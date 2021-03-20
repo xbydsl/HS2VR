@@ -47,7 +47,10 @@ Note: Be careful with shadows, it might be a quirk of my setup but turning off s
 Requires HS2DX (will not work with vanilla HS2), BepInEx
 
 Unzip the HS2VR.zip file into your base game directory. 
-Either patch the globalgamemanagers in HoneySelect2_Data and StudioNEOV2_Data yourself or use the ones from the release section. MAKE SURE YOUR GAME VERSION MATCHES THE GLOBALGAMEMANAGERS VERSION.
+
+BACKUP YOUR GLOBALGAMEMANAGERS (in HoneySelect2_Data and StudioNEOV2_Data - make a copy of globalgamemanagers somewhere safe)
+
+Either patch the globalgamemanagers in HoneySelect2_Data and StudioNEOV2_Data yourself or use the ones from the release section. MAKE SURE YOUR GAME VERSION MATCHES THE GLOBALGAMEMANAGERS VERSION. As of latest this is for HS2DX V1.2.3 ONLY. 
 
 Optionally (but recommended), install the included version of HS2Graphics (same as the latest SSS version of HS2Graphics...but with VR support and related QOL improvements).
 
