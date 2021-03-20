@@ -24,9 +24,9 @@ Camera buttons in studio now work, as do the in scene movable camera views, thou
 
 # Known Issues
 
-Switching modes (Seated to Standing or vice versa) results in an awkward camera height, simply switch scenes or camera views to correct it.
-It's possible to come out of an HScene or Maker with the view tilted. If that happens switch modes and then switch back (Ctrl+C, Ctrl+C - double tap control c to switch).
-3D space studio object manipulation is basically impossible as the raycast source and your eyeballs are now different. You can use the move controller and HS2PE to work around a lot of this, but there are limits.
+Switching modes (Seated to Standing or vice versa) results in an awkward camera height, simply switch scenes or camera views to correct it.\
+It's possible to come out of an HScene or Maker with the view tilted. If that happens switch modes and then switch back (Ctrl+C, Ctrl+C - double tap control c to switch).\
+3D space studio object manipulation is basically impossible as the raycast source and your eyeballs are now different. You can use the move controller and HS2PE to work around a lot of this, but there are limits.\
 Certain GUI elements in studio have a raycast component that renders them invisible in VR. Specifically the scene settings, camera light and the in-scene camera selection drop down. They are present and actually clickable just not visible. Maniputlation of scene settings will probably need to be done outside of VR unless you have incredible spatial memory. Camera light can be adjusted in Graphics instead. The camera selector drop down isn't too hard to click blind...
 
 # Notes on included HS2Graphics
@@ -37,7 +37,7 @@ This works for 2D and both the official and unofficial VR modes.
 
 Some notes on VR graphics settings:
 
-Since the VR interface is in scene TAA applies to it and tends to make it a bit blurry, probably stick to SMAA in scenes (though I break this guideline all the time...)
+Since the VR interface is in scene TAA applies to it and tends to make it a bit blurry, probably stick to SMAA in scenes (though I break this guideline all the time...)\
 For best VR performance I recommend turning off MSAA and Realtime Reflection Probes (on Settings) and lowering the SSS settings Postprocess Iterations to 2 and Shader Iterations per pass to 4. Deactivating dither may help, although I didn't notice a big difference.
 
 Note: Be careful with shadows, it might be a quirk of my setup but turning off shadows cuts my frame rate in half. Make sure shadows are on in graphics and in any other mods touching the graphics settings.
