@@ -25,12 +25,12 @@ namespace HS2VR
                 var harmony = new Harmony("com.killmar.HS2VR");
                 harmony.PatchAll(typeof(VRPatcher));
 
-                Type povxController = AccessTools.TypeByName("HS2_PovX.Controller");
+        /*        Type povxController = AccessTools.TypeByName("HS2_PovX.Controller");
                 if (povxController != null)
                 {
                     povEnabled = AccessTools.Field(povxController, "povEnabled");
                     harmony.Patch(AccessTools.Method(povxController, "Update"), null, new HarmonyMethod(typeof(VRPatcher), "syncPOVXCamera"), null, null);
-                }
+                } */
             }
             catch (Exception ex)
             {
@@ -38,15 +38,15 @@ namespace HS2VR
             }
         }
 
-        public static FieldInfo povEnabled;
+   //     public static FieldInfo povEnabled;
 
-        public static void syncPOVXCamera()
+   /*     public static void syncPOVXCamera()
         {
             if ((bool)povEnabled.GetValue(null))
             {
                 VRPatcher.SyncToMainTransform(Camera.main.transform, false);
             }
-        }
+        }*/
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LogoScene), "Start")]
@@ -308,10 +308,7 @@ namespace HS2VR
         {
             if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
             {
-                if (povEnabled != null && !((bool)povEnabled.GetValue(null)))
-                {
-                    VRPatcher.SyncToMainTransform(__instance.transform, false);
-                }
+                VRPatcher.SyncToMainTransform(__instance.transform, false);                
             }
         }
 
