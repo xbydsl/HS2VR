@@ -34,7 +34,7 @@ namespace HS2VR
         {
             get
             {
-                return "0.0.2.0";
+                return "0.0.3.0";
             }
         }
 
