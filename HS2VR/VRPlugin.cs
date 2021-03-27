@@ -34,7 +34,7 @@ namespace HS2VR
         {
             get
             {
-                return "0.0.3.0";
+                return "0.0.4.0";
             }
         }
 
@@ -77,7 +77,8 @@ namespace HS2VR
             }
             else if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
             {
-                VRPatcher.SyncToMainTransform(Studio.Studio.Instance.cameraCtrl.transform, false);
+                if (!VRPatcher.povEnabledValue)
+                    VRPatcher.SyncToMainTransform(Studio.Studio.Instance.cameraCtrl.transform, false);
             }           
         }
     }

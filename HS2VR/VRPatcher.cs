@@ -25,28 +25,41 @@ namespace HS2VR
                 var harmony = new Harmony("com.killmar.HS2VR");
                 harmony.PatchAll(typeof(VRPatcher));
 
-        /*        Type povxController = AccessTools.TypeByName("HS2_PovX.Controller");
+                Type povxController = AccessTools.TypeByName("HS2_PovX.Controller");
                 if (povxController != null)
                 {
-                    povEnabled = AccessTools.Field(povxController, "povEnabled");
-                    harmony.Patch(AccessTools.Method(povxController, "Update"), null, new HarmonyMethod(typeof(VRPatcher), "syncPOVXCamera"), null, null);
-                } */
+                    povEnabledField = AccessTools.Field(povxController, "povEnabled");
+                    harmony.Patch(AccessTools.Method(povxController, "UpdatePoVCamera"), null, new HarmonyMethod(typeof(VRPatcher), "syncPOVXCamera"), null, null);
+                } 
             }
             catch (Exception ex)
             {
                 VRLog.Error(ex.ToString(), Array.Empty<object>());
             }
+            povEnabledValue = false;
         }
 
-   //     public static FieldInfo povEnabled;
+        private static FieldInfo povEnabledField;
+        public static bool povEnabledValue { get; set; }
 
-   /*     public static void syncPOVXCamera()
+        public static void syncPOVXCamera()
         {
-            if ((bool)povEnabled.GetValue(null))
+            bool povCurrentlyEnabled = (bool)povEnabledField.GetValue(null);
+            if (!povCurrentlyEnabled && povEnabledValue)
             {
-                VRPatcher.SyncToMainTransform(Camera.main.transform, false);
+                if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericStandingMode)))
+                {
+                    VR.Camera.Origin.Rotate(new Vector3(0, VR.Camera.Origin.rotation.y, 0), Space.World);
+                    VR.Camera.Head.Rotate(new Vector3(0, VR.Camera.Head.rotation.y, 0), Space.World);
+                }
             }
-        }*/
+
+            povEnabledValue = povCurrentlyEnabled;
+            if (povEnabledValue)
+            {
+                VRPatcher.SyncToMainTransform(Camera.main.transform, positionOnly: false, adjustHead: true);
+            }
+        }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LogoScene), "Start")]
@@ -253,6 +266,14 @@ namespace HS2VR
             VRPatcher.MoveVRCameraToTarget(__instance.transform, false);
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Studio.CameraControl), "Export")]
+        public static void ExportCameraData(Studio.CameraControl __instance)
+        {
+            if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericStandingMode)))
+                __instance.SetCamera(VR.Camera.HeadHead.transform.position, VR.Camera.HeadHead.transform.rotation.eulerAngles, VR.Camera.HeadHead.transform.rotation, Vector3.zero);
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GlobalMethod), "loadCamera")]
         public static void GlobalMethodloadCamerayPostfix()
@@ -294,6 +315,11 @@ namespace HS2VR
         [HarmonyPatch(typeof(CameraControl_Ver2), "LateUpdate")]
         public static void CameraControlV2(CameraControl_Ver2 __instance)
         {
+            if (povEnabledValue)
+            {
+                return;
+            }
+
             if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
             {
                 VRPatcher.SyncToMainTransform(__instance.transform, false);                
@@ -312,7 +338,7 @@ namespace HS2VR
             return true;
         }
 
-        private static void MoveMainCameraToVRCamera(Transform target)
+        private static void MoveMainCameraToVRCamera()
         {
             Camera main = Camera.main;
             if (main != null)
@@ -329,7 +355,7 @@ namespace HS2VR
             }
         }
 
-        public static void SyncToMainTransform(Transform target, bool positionOnly = false)
+        public static void SyncToMainTransform(Transform target, bool positionOnly = false, bool adjustHead = false)
         {
             Transform origin = VR.Camera.Origin;
             Transform head = VR.Camera.Head;
@@ -339,7 +365,10 @@ namespace HS2VR
 
             }
             Vector3 position = target.position;
-            origin.position = position;// - (head.position - origin.position); 
+            if (adjustHead)
+                origin.position = position - (head.position - origin.position);
+            else
+                origin.position = position;
         }
 
         public static void MoveVRCameraToMainCamera(bool positionOnly = false)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
+using Valve.VR;
 using VRGIN.Controls;
 using VRGIN.Controls.Tools;
 using VRGIN.Core;
@@ -19,6 +21,10 @@ namespace HS2VR
 
                 new MultiKeyboardShortcut(VR.Settings.Shortcuts.ChangeMode.GetKeyStrokes(), () => { 
                     VR.Manager.SetMode<GenericSeatedMode>();
+                }),
+                new MultiKeyboardShortcut(VR.Settings.Shortcuts.ResetView, () => {
+                    VR.Camera.Origin.Rotate(new Vector3(0, VR.Camera.Origin.rotation.y, 0), Space.World);
+                    VR.Camera.Head.Rotate(new Vector3(0, VR.Camera.Head.rotation.y, 0), Space.World);
                 })
             });
         }
@@ -48,7 +54,16 @@ namespace HS2VR
 
             base.OnStart();
 
+            //  SteamVR.instance.overlay.ShowKeyboard(0, 0, "Keyboard", 256, "", false, 0);
+          //  SteamVR_Events.System(Valve.VR.EVREventType.VREvent_KeyboardClosed).Listen(OnKeyboardClosed);
+
+
             MoveToPosition(VRPlugin.CameraResetPos, VRPlugin.CameraResetRot, false);
+        }
+
+        private void OnKeyboardClosed(VREvent_t args)
+        {
+            
         }
 
         protected override void OnUpdate()
