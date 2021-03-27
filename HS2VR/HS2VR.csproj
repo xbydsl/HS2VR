@@ -100,6 +100,8 @@
     <Compile Include="Interpreters\HS2Interpreter.cs" />
     <Compile Include="Interpreters\OtherSceneInterpreter.cs" />
     <Compile Include="Interpreters\SceneInterpreter.cs" />
+    <Compile Include="VRCollider.cs" />
+    <Compile Include="VRColliderHelper.cs" />
     <Compile Include="VRLoader.cs" />
     <Compile Include="VRPlugin.cs" />
     <Compile Include="VRPatcher.cs" />
