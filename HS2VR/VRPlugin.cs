@@ -52,6 +52,8 @@ namespace HS2VR
 
             bool vrDeactivated = Environment.CommandLine.Contains("--novr");
             bool vrActivated = Environment.CommandLine.Contains("--vr");
+
+            VRLog.Info($"Screen Size {Screen.width} x {Screen.height}");
             
             if (vrActivated || (!vrDeactivated && SteamVRDetector.IsRunning))
             {
@@ -71,7 +73,6 @@ namespace HS2VR
 
             if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && Studio.Studio.Instance.ociCamera != null)
             {
-          //      VRLog.Info("Locking to OCI Camera...");
                 VRPatcher.SyncToMainTransform(Studio.Studio.Instance.ociCamera.objectItem.transform, false);
             }
             else if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))

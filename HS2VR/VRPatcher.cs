@@ -273,20 +273,9 @@ namespace HS2VR
         [HarmonyPatch(typeof(EyeLookController), "LateUpdate")]
         public static bool EyeLookControllerLateUpdate(EyeLookController __instance)
         {
-    //        if (!VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
+            if (__instance.ptnNo != 4)
             {
-                VRPatcher.MoveMainCameraToVRCamera(__instance.target);
-            }
-            return true;
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(NeckLookController), "LateUpdate")]
-        public static bool NeckLookControllerLateUpdate(NeckLookController __instance)
-        {
-    //        if (!VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
-            {
-               VRPatcher.MoveMainCameraToVRCamera(__instance.target);
+                __instance.target = VR.Camera.Head;
             }
             return true;
         }
@@ -295,10 +284,9 @@ namespace HS2VR
         [HarmonyPatch(typeof(NeckLookControllerVer2), "LateUpdate")]
         public static bool NeckLookControllerVer2LateUpdate(NeckLookControllerVer2 __instance)
         {
-  //          if (!VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
-            {
-               VRPatcher.MoveMainCameraToVRCamera(__instance.target);
-            }
+            if (__instance.ptnNo == 1)                
+                __instance.target = VR.Camera.Head; 
+
             return true;
         }
 
@@ -351,7 +339,7 @@ namespace HS2VR
 
             }
             Vector3 position = target.position;
-            origin.position = position - (head.position - origin.position); 
+            origin.position = position;// - (head.position - origin.position); 
         }
 
         public static void MoveVRCameraToMainCamera(bool positionOnly = false)
