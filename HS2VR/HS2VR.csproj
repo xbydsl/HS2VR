@@ -64,6 +64,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Postprocessing.Runtime">
+      <HintPath>..\..\..\illusion\hs2dx\HoneySelect2_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IllusionLibs.HoneySelect2.UnityEngine.CoreModule.2018.4.11.2\lib\net46\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -96,10 +99,13 @@
     <Compile Include="ConfigurableContext.cs" />
     <Compile Include="GenericSeatedMode.cs" />
     <Compile Include="GenericStandingMode.cs" />
+    <Compile Include="HS2Shortcuts.cs" />
     <Compile Include="Interpreters\HSceneInterpreter.cs" />
     <Compile Include="Interpreters\HS2Interpreter.cs" />
     <Compile Include="Interpreters\OtherSceneInterpreter.cs" />
     <Compile Include="Interpreters\SceneInterpreter.cs" />
+    <Compile Include="POVTool.cs" />
+    <Compile Include="RotationTool.cs" />
     <Compile Include="VRCollider.cs" />
     <Compile Include="VRColliderHelper.cs" />
     <Compile Include="VRLoader.cs" />

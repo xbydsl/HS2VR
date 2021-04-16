@@ -22,7 +22,7 @@ namespace HS2VR
             var dynamicBones = GameObject.FindObjectsOfType<DynamicBone>();
             if (dynamicBonesV2.Length == 0 && dynamicBones.Length == 0)
             {
-                VRLog.Info("No DB Bones Present, Nothing To Do");
+                //VRLog.Info("No DB Bones Present, Nothing To Do");
                 return;
             }
 
@@ -31,11 +31,11 @@ namespace HS2VR
             var rightHand = VR.Controller.Right?.gameObject;
             if (leftHand == null && rightHand == null)
             {
-                VRLog.Info("No Hands, skipping for a round");
+                //VRLog.Info("No Hands, skipping for a round");
                 return;
             }
 
-            VRLog.Info("Found Hands, Updating DB Bones");
+            //VRLog.Info("Found Hands, Updating DB Bones");
 
             //Attach a dynamic bone collider to each, then link that to all dynamic bones
             if (leftHand) AttachToControllerAndLink(leftHand, leftHand.GetInstanceID().ToString(), dynamicBones, dynamicBonesV2);
@@ -52,7 +52,7 @@ namespace HS2VR
             var renderTf = hand.transform.FindLoop("Model");
             if (renderTf == null)
             {
-                VRLog.Info("No Render Loop Found");
+                //VRLog.Info("No Render Loop Found");
                 return null;
             }
 
@@ -117,7 +117,7 @@ namespace HS2VR
             // var localPos = renderModelTf.forward * -0.075f;
             // colliderObject.transform.localPosition = localPos; 
 
-            VRLog.Info($"Added DB Collider to {controllerGameObject.name}");
+          //  VRLog.Info($"Added DB Collider to {controllerGameObject.name}");
 
             return collider;
         }

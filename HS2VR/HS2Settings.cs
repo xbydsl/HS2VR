@@ -44,6 +44,10 @@ namespace HS2VR
             return settings;
         }
 
+        private HS2Shortcuts _HS2Shortcuts = new HS2Shortcuts();
+        [XmlComment("Additional HS2 Shortcuts. Refer to https://docs.unity3d.com/ScriptReference/KeyCode.html for a list of available keys.")]
+        public HS2Shortcuts HS2Shortcuts { get { return _HS2Shortcuts; } set { _HS2Shortcuts = value; } } 
+
         [XmlElement(Type = typeof(List<KeySet>))]
         public List<KeySet> KeySets { get { return _KeySets; } set { _KeySets = value; } }
         private List<KeySet> _KeySets = null;

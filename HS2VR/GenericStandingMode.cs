@@ -25,6 +25,10 @@ namespace HS2VR
                 new MultiKeyboardShortcut(VR.Settings.Shortcuts.ResetView, () => {
                     VR.Camera.Origin.Rotate(new Vector3(0, VR.Camera.Origin.rotation.y, 0), Space.World);
                     VR.Camera.Head.Rotate(new Vector3(0, VR.Camera.Head.rotation.y, 0), Space.World);
+                }),
+                new MultiKeyboardShortcut(((HS2VRSettings)VR.Settings).HS2Shortcuts.SuspendPOVToggle.GetKeyStrokes(), () =>
+                {
+                    VRPatcher.POVPaused = !VRPatcher.POVPaused;
                 })
             });
         }
@@ -75,7 +79,10 @@ namespace HS2VR
         {
             get
             {
-                return base.Tools.Concat(new Type[] { typeof(PlayTool)});
+                if (VRPatcher.POVAvailable)
+                    return base.Tools.Concat(new Type[] { typeof(PlayTool), typeof(POVTool), typeof(RotationTool)});
+                else
+                    return base.Tools.Concat(new Type[] { typeof(PlayTool), typeof(RotationTool) });
             }
         }
     }

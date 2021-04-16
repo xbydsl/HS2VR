@@ -18,6 +18,10 @@ namespace HS2VR
             return base.CreateShortcuts().Concat(new IShortcut[] {
                 new MultiKeyboardShortcut(VR.Settings.Shortcuts.ChangeMode.GetKeyStrokes(), () => {
                     VR.Manager.SetMode<GenericStandingMode>();
+                }),
+                new MultiKeyboardShortcut(((HS2VRSettings)VR.Settings).HS2Shortcuts.SuspendPOVToggle.GetKeyStrokes(), () =>
+                {
+                    VRPatcher.POVPaused = !VRPatcher.POVPaused;
                 })
             });
         }

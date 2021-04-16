@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PostProcessing;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using VRGIN.Core;
 
@@ -124,6 +127,18 @@ namespace HS2VR.Interpreters
                 currentSceneInterpreter.OnStart();
                 currentSceneInterpreter.OnEnable();
             }
+
+            try
+            {
+                QualitySettings.realtimeReflectionProbes = false;
+                VR.Camera.SteamCam.camera.allowMSAA = false;
+                VR.Camera.SteamCam.camera.GetComponent<PostProcessLayer>().antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
+            }
+            catch (Exception e)
+            {
+                VRLog.Warn($"Unable to deactive extra Graphics Settings: {e.Message}", e);
+            }
+
         }
     }
 }

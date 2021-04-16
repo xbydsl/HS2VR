@@ -1,10 +1,13 @@
 /* Taken from Ooetksh's Ai-Shoujo VR mod */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using Actor;
 using ADV;
+using AIChara;
 using BepInEx.Harmony;
 using CharaCustom;
 using HarmonyLib;
@@ -29,8 +32,17 @@ namespace HS2VR
                 if (povxController != null)
                 {
                     povEnabledField = AccessTools.Field(povxController, "povEnabled");
+                    enablePOVMethod = AccessTools.Method(povxController, "EnablePoV");
+                    povFocusField = AccessTools.Field(povxController, "povFocus");
+                    targetFocusField = AccessTools.Field(povxController, "targetFocus");
+                    getValidFocusMethod = AccessTools.Method(povxController, "GetValidFocus");
+                    getValidCharacterFromFocusMethod = AccessTools.Method(povxController, "GetValidCharacterFromFocus");
+                    setPovCharacterMethod = AccessTools.Method(povxController, "SetPoVCharacter");
+                    setTargetCharacterMethod = AccessTools.Method(povxController, "SetTargetCharacter");
                     harmony.Patch(AccessTools.Method(povxController, "UpdatePoVCamera"), null, new HarmonyMethod(typeof(VRPatcher), "syncPOVXCamera"), null, null);
-                } 
+                    harmony.Patch(AccessTools.Method(povxController, "UpdateMouseLook"), new HarmonyMethod(typeof(VRPatcher), "POVMouseLookOverride"));
+                    POVAvailable = true;
+                }                
             }
             catch (Exception ex)
             {
@@ -39,27 +51,92 @@ namespace HS2VR
             povEnabledValue = false;
         }
 
+        public static bool POVAvailable = false;
+
+        private static MethodInfo enablePOVMethod;
+        private static MethodInfo getValidFocusMethod;
+        private static MethodInfo getValidCharacterFromFocusMethod;
+        private static MethodInfo setPovCharacterMethod;
+        private static MethodInfo setTargetCharacterMethod;
         private static FieldInfo povEnabledField;
+        private static FieldInfo targetFocusField;
+        private static FieldInfo povFocusField;
+
         public static bool povEnabledValue { get; set; }
+        public static bool POVPaused { get; set; }
+
+        public static void CharaCycleKeyPress()
+        {
+            int focusTarget = (int)getValidFocusMethod.Invoke(null, new object[] { (int)povFocusField.GetValue(null) + 1 });
+            targetFocusField.SetValue(null, focusTarget);
+            povFocusField.SetValue(null, focusTarget);
+            ChaControl cha = (ChaControl)getValidCharacterFromFocusMethod.Invoke(null, new object[] { focusTarget });
+            setPovCharacterMethod.Invoke(null, new object[] { cha });
+            setTargetCharacterMethod.Invoke(null, new object[] { cha });            
+        }
+
+        public static bool POVMouseLookOverride()
+        {
+            return false;
+        }
+
+        public static void LockOnCyclePress()
+        {
+            int focusTarget = (int)getValidFocusMethod.Invoke(null, new object[] { (int)targetFocusField.GetValue(null) + 1 });
+            targetFocusField.SetValue(null, focusTarget);
+            ChaControl cha = (ChaControl)getValidCharacterFromFocusMethod.Invoke(null, new object[] { focusTarget });
+            setTargetCharacterMethod.Invoke(null, new object[] { cha });
+        }
+
+        public static void POVEnabledKeypress()
+        {
+            enablePOVMethod.Invoke(null, new object[] { !povEnabledValue });
+        }
+
+        private static Vector3 povxOriginalPosition;
+        private static Quaternion povxOriginalRotation;
+
+        public static void handlePOVXStatus()
+        {
+            if (povEnabledField == null)
+                return;
+
+            bool povCurrentlyEnabled = (bool)povEnabledField.GetValue(null);
+
+            if (!povCurrentlyEnabled && povEnabledValue)
+            {
+                POVPaused = false;
+                if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericStandingMode)))
+                {
+                    VR.Camera.Origin.position = povxOriginalPosition;
+                    VR.Camera.Origin.rotation = povxOriginalRotation;
+                }
+            }
+            else if (povCurrentlyEnabled && !povEnabledValue)
+            {
+                povxOriginalPosition = VR.Camera.Origin.position;
+                povxOriginalRotation = VR.Camera.Origin.rotation;
+            }
+            povEnabledValue = povCurrentlyEnabled;
+        }
 
         public static void syncPOVXCamera()
         {
-            bool povCurrentlyEnabled = (bool)povEnabledField.GetValue(null);
-            if (!povCurrentlyEnabled && povEnabledValue)
-            {
-                if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericStandingMode)))
-                {
-                    VR.Camera.Origin.Rotate(new Vector3(0, VR.Camera.Origin.rotation.y, 0), Space.World);
-                    VR.Camera.Head.Rotate(new Vector3(0, VR.Camera.Head.rotation.y, 0), Space.World);
-                }
-            }
 
-            povEnabledValue = povCurrentlyEnabled;
-            if (povEnabledValue)
+            handlePOVXStatus();
+            if (povEnabledValue && !POVPaused)
             {
                 VRPatcher.SyncToMainTransform(Camera.main.transform, positionOnly: false, adjustHead: true);
             }
         }
+
+        // Not allowed to change FOV in VR...just, prevent it totally
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Camera), "set_fieldOfView")]
+        public static bool SetFOV()
+        {
+            return false;
+        } 
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LogoScene), "Start")]
@@ -117,7 +194,7 @@ namespace HS2VR
         private const float TITLE_DISTANCE_ADJ_RATIO = .5f;
         private const float LOBBY_DISTANCE_ADJ_RATIO = .8f;
 
-        private static void AdjustForFOVDifference(Transform cam, Transform target, float initialFov, float targetFov, float distanceAdjustmentFactor, bool skipYAdjustment = false)
+        private static float AdjustForFOVDifference(Transform cam, Transform target, float initialFov, float targetFov, float distanceAdjustmentFactor, bool skipYAdjustment = false)
         {
             float originalY = cam.position.y + (skipYAdjustment ? 0 : (VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)) ? ((HS2VRSettings)VR.Settings).SeatedDialogueHeightAdjustment : ((HS2VRSettings)VR.Settings).StandingDialogueHeightAdjustment));
             Vector3 camPos = new Vector3(cam.position.x, 0, cam.position.z);
@@ -129,10 +206,12 @@ namespace HS2VR
             float newDistance = sizeOnScreen / (2f * Mathf.Tan(Mathf.Deg2Rad * (targetFov / 2f)));
 
             // Note - actual distance adjustment is a bit too close, back it off a bit
-            cam.position = Vector3.MoveTowards(camPos, targetPos, (distance - newDistance) * distanceAdjustmentFactor);
+            float moveTowardsDistance = (distance - newDistance) * distanceAdjustmentFactor;
+            cam.position = Vector3.MoveTowards(camPos, targetPos, moveTowardsDistance);
             cam.position += new Vector3(0, originalY, 0);
 
-            VRLog.Info($"Adjusting for FOV Change Distance Adj: {distance - newDistance} Corrected Distance Adj: {(distance - newDistance) * distanceAdjustmentFactor} Old Distance: {distance} New Distance: {newDistance}");
+            VRLog.Info($"Adjusting for FOV Change Distance Adj: {distance - newDistance} Corrected Distance Adj: {moveTowardsDistance} Old Distance: {distance} New Distance: {newDistance}");
+            return moveTowardsDistance;
         }
 
         [HarmonyPostfix]
@@ -276,16 +355,34 @@ namespace HS2VR
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GlobalMethod), "loadCamera")]
-        public static void GlobalMethodloadCamerayPostfix()
+        public static void GlobalMethodloadCamerayPostfix(CameraControl_Ver2 _ctrl)
         {
-            VRLog.Info("Setting VR Camera to game camera");
+            ChaControl heroine = HSceneManager.Instance?.females?[0];
+            if (heroine != null)
+            {
+                VRLog.Info($"Adjusting towards: {heroine.chaFile.parameter.fullname}");
+                float moveDistance = AdjustForFOVDifference(_ctrl.transform, heroine.transform, TITLE_FOV, VR_FOV, LOBBY_DISTANCE_ADJ_RATIO, true);
+                _ctrl.TargetPos = _ctrl.transform.InverseTransformPoint(_ctrl.transform.position);
+                _ctrl.CameraDir = Vector3.MoveTowards(_ctrl.CameraDir, _ctrl.TargetPos, moveDistance);
+            }
+
+            VRLog.Info("Setting VR Camera to game camera");            
             VRPatcher.MoveVRCameraToMainCamera();
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GlobalMethod), "loadResetCamera")]
-        public static void GlobalMethodloadResetCamerayPostfix()
+        public static void GlobalMethodloadResetCamerayPostfix(CameraControl_Ver2 _ctrl)
         {
+            ChaControl heroine = HSceneManager.Instance?.females?[0];
+            if (heroine != null)
+            {
+                VRLog.Info($"Adjusting towards: {heroine.chaFile.parameter.fullname}");
+                float moveDistance = AdjustForFOVDifference(_ctrl.transform, heroine.transform, TITLE_FOV, VR_FOV, LOBBY_DISTANCE_ADJ_RATIO, true);
+                _ctrl.TargetPos = _ctrl.transform.InverseTransformPoint(_ctrl.transform.position);
+                _ctrl.CameraDir = Vector3.MoveTowards(_ctrl.CameraDir, _ctrl.TargetPos, moveDistance);
+            }
+
             VRLog.Info("Setting VR Camera to game camera");
             VRPatcher.MoveVRCameraToMainCamera();
         }
@@ -294,7 +391,7 @@ namespace HS2VR
         [HarmonyPatch(typeof(EyeLookController), "LateUpdate")]
         public static bool EyeLookControllerLateUpdate(EyeLookController __instance)
         {
-            if (__instance.ptnNo != 4)
+            if (__instance.ptnNo == 1 || __instance.ptnNo == 2)
             {
                 __instance.target = VR.Camera.Head;
             }
@@ -305,7 +402,7 @@ namespace HS2VR
         [HarmonyPatch(typeof(NeckLookControllerVer2), "LateUpdate")]
         public static bool NeckLookControllerVer2LateUpdate(NeckLookControllerVer2 __instance)
         {
-            if (__instance.ptnNo == 1)                
+            if (__instance.ptnNo == 1 || __instance.ptnNo == 2)                
                 __instance.target = VR.Camera.Head; 
 
             return true;
@@ -324,18 +421,6 @@ namespace HS2VR
             {
                 VRPatcher.SyncToMainTransform(__instance.transform, false);                
             }
-        }
-
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(HMotionEyeNeckFemale), "SetBehaviourNeck")]
-        public static bool SetBehaviourNeck(HMotionEyeNeckFemale __instance, ref int _behaviour)
-        {
-            if ((Manager.Config.HData.NeckDir0 || Manager.Config.HData.NeckDir1) && _behaviour == 2)
-            {
-                _behaviour = 1;
-            }
-            return true;
         }
 
         private static void MoveMainCameraToVRCamera()

@@ -34,7 +34,7 @@ namespace HS2VR
         {
             get
             {
-                return "0.0.5.0";
+                return "0.0.6.0";
             }
         }
 
@@ -73,16 +73,16 @@ namespace HS2VR
 
         public void Update()
         {
-
+            VRPatcher.handlePOVXStatus();
             if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && Studio.Studio.Instance.ociCamera != null)
             {
                 VRPatcher.SyncToMainTransform(Studio.Studio.Instance.ociCamera.objectItem.transform, false);
             }
             else if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
-            {
+            {                                
                 if (!VRPatcher.povEnabledValue)
                     VRPatcher.SyncToMainTransform(Studio.Studio.Instance.cameraCtrl.transform, false);
-            }           
+            }        
         }
     }
 }
