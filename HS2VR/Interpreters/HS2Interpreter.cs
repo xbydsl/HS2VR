@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PostProcessing;
@@ -35,12 +36,25 @@ namespace HS2VR.Interpreters
         private int _SceneType;
         public SceneInterpreter currentSceneInterpreter;
 
+        private bool suppressCamlightShadows;
+        private bool replaceCamlightWSpotLight;
+        bool loaded = false;
+
         protected override void OnAwake()
         {
             base.OnAwake();
 
+            suppressCamlightShadows = ((HS2VRSettings)VR.Settings).SuppressCamlightShadows;
+            replaceCamlightWSpotLight = ((HS2VRSettings)VR.Settings).ReplaceCamLightWSpotLight;
+
             _SceneType = scenes["NoScene"];
             currentSceneInterpreter = new OtherSceneInterpreter();
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        protected void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         protected override void OnUpdate()
@@ -49,6 +63,90 @@ namespace HS2VR.Interpreters
 
             DetectScene();
             currentSceneInterpreter.OnUpdate();
+            FixCamLight();
+            if (!loaded)
+            {
+                StartCoroutine(FindCamlight());
+                loaded = true;
+            }
+            if (QualitySettings.realtimeReflectionProbes)
+                StartCoroutine(UpdateVRGraphics());
+        }
+
+        // Give it a few frames and then flip some of these settings to VR friendly modes
+        private IEnumerator UpdateVRGraphics()
+        {
+            yield return null;
+            yield return null;
+            yield return null;
+
+            try
+            {
+                QualitySettings.realtimeReflectionProbes = false;
+                VR.Camera.SteamCam.camera.allowMSAA = false;
+                VR.Camera.SteamCam.camera.GetComponent<PostProcessLayer>().antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
+                VRLog.Info("VR Graphics QualitySettings Adapted");
+            }
+            catch (Exception e)
+            {
+                VRLog.Warn($"Unable to deactive extra Graphics Settings: {e.Message}", e);
+            }
+
+
+        }
+
+        public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {            
+            VRLog.Info($"Entering Scene {scene.name} Mode {mode}");
+            StartCoroutine(FindCamlight());
+        }
+
+        private IEnumerator FindCamlight()
+        {
+            camLight = null;
+            camLightComponent = null;
+            for (int i = 0; i < 10; i++)
+            {
+                if (camLight == null)
+                    camLight = GameObject.Find("Cam Light");
+                if (camLight == null)
+                    camLight = GameObject.Find("Directional Light Key");
+                if (camLight != null && camLightComponent == null)
+                {
+                    camLightComponent = camLight.GetComponent<Light>();
+                    if (camLightComponent != null && suppressCamlightShadows && !replaceCamlightWSpotLight)
+                    {
+                        VRLog.Info($"Found Camlight {camLight} {camLightComponent}");
+                        camLightComponent.shadowStrength = 0;
+                        break;
+                    }
+                    else if (camLightComponent != null && replaceCamlightWSpotLight)
+                    {
+                        camLightComponent.type = LightType.Spot;
+                        camLightComponent.spotAngle = 60;
+                        camLightComponent.range = 500;
+                        camLightComponent.shadowStrength = .8f;
+                        VRLog.Info($"Found Camlight - Changed to Spot {camLight} {camLightComponent}");
+                    }
+                }                
+                // If we don't have the cam light in 10 frames it's not coming.
+                yield return null;
+            }
+
+            if (camLight == null)
+                VRLog.Info("No Camlight Found");
+        }
+
+        private GameObject camLight;
+        private Light camLightComponent;
+        public void FixCamLight() 
+        {
+            if (camLight != null && camLight.transform != null && VR.Camera.Head != null)
+            {
+                camLight.transform.SetParent(VR.Camera.Head.transform);
+                camLight.transform.position = VR.Camera.Head.position;
+                camLight.transform.localRotation = Quaternion.identity;                
+            }
         }
 
         public bool isHScene { 
@@ -127,18 +225,7 @@ namespace HS2VR.Interpreters
                 currentSceneInterpreter.OnStart();
                 currentSceneInterpreter.OnEnable();
             }
-
-            try
-            {
-                QualitySettings.realtimeReflectionProbes = false;
-                VR.Camera.SteamCam.camera.allowMSAA = false;
-                VR.Camera.SteamCam.camera.GetComponent<PostProcessLayer>().antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
-            }
-            catch (Exception e)
-            {
-                VRLog.Warn($"Unable to deactive extra Graphics Settings: {e.Message}", e);
-            }
-
+            
         }
     }
 }

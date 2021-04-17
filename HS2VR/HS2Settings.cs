@@ -53,6 +53,7 @@ namespace HS2VR
         private List<KeySet> _KeySets = null;
 
         private string _DefaultMode = "Seated";
+        [XmlComment("Seated - Mouse/KB, Standing - Controllers")]
         public string DefaultMode {  get { return _DefaultMode;  } set { _DefaultMode = value; } }
 
         private float _SeatedDialogueHeightAdjustment = 3.0f;
@@ -60,6 +61,14 @@ namespace HS2VR
 
         private float _StandingDialogueHeightAdjustment = 3.0f;
         public float StandingDialogueHeightAdjustment { get { return _StandingDialogueHeightAdjustment; } set { _StandingDialogueHeightAdjustment = value; } }
+
+        private bool _SuppressCamlightShadows = true;
+        [XmlComment("Suppresses the shadows on the camlight directional light (if present)")]
+        public bool SuppressCamlightShadows {  get { return _SuppressCamlightShadows; } set { _SuppressCamlightShadows = value; } }
+
+        private bool _ReplaceCamLightWSpotLight = false;
+        [XmlComment("Replaces the camlight directional light with a spot light strapped to the head.")]
+        public bool ReplaceCamLightWSpotLight {  get { return _ReplaceCamLightWSpotLight; } set { _ReplaceCamLightWSpotLight = value; } }
 
         public bool UsingHeadPos { get { return _UsingHeadPos; } set { _UsingHeadPos = value; } }
         private bool _UsingHeadPos = false;

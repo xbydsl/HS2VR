@@ -28,13 +28,13 @@ namespace HS2VR
 
             base.OnUpdate();
 
-            foreach(Valve.VR.EVRButtonId eVRButton in Enum.GetValues(typeof(Valve.VR.EVRButtonId)))
+  /*          foreach(Valve.VR.EVRButtonId eVRButton in Enum.GetValues(typeof(Valve.VR.EVRButtonId)))
             {
                 if (Controller.GetPressDown(eVRButton))
                 {
                     VRLog.Info($"Button: {eVRButton.ToString()}");
                 }
-            }
+            } */
             if (Controller.GetPressDown(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger))
             {
                 triggerStartTime = Time.unscaledTime;
@@ -43,12 +43,21 @@ namespace HS2VR
             {
                 VRPatcher.POVEnabledKeypress();
             }
+            if (Controller.GetPress(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger))
+            {
+                if (VRPatcher.povEnabledValue && Time.unscaledTime - triggerStartTime > 1.5f)
+                    Owner.StartRumble(new RumbleImpulse(800));
+            }
             if (Controller.GetPressUp(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger))
             {
-                if (Time.unscaledTime - triggerStartTime > 1.5f)
+                if (VRPatcher.povEnabledValue && Time.unscaledTime - triggerStartTime > 1.5f)
                 {
                     VRPatcher.POVPaused = !VRPatcher.POVPaused;
                     triggerStartTime = 0f;
+                }
+                else if (!VRPatcher.povEnabledValue)
+                { 
+                    VRPatcher.POVEnabledKeypress();
                 }
                 else
                 {
