@@ -18,9 +18,27 @@ Seated mode works (and is the new default). This mode is VR + mouse/keyboard, co
 
 Maker now functions and has a visible UI.
 
-Major camera improvements for both seated and standing. Basically everything should now work as expected, no more ending up in strange places and facing backwards. Title, lobby and dialog scenes will attempt to adjust for the FOV change by moving the camera closer to the girl so she occupies the expected amount of view space (otherwise you feel weirdly far away). Note that the fixed VR FOV causes some camera positions to be a bit amusing (like the 2D view of the ledger books that in 3D has you standing on the counter instead).
+Major camera improvements for both seated and standing. Basically everything should now work as expected, no more ending up in strange places and facing backwards. Title, lobby, H and dialog scenes will attempt to adjust for the FOV change by moving the camera closer to the girl so she occupies the expected amount of view space (otherwise you feel weirdly far away). Note that the fixed VR FOV causes some camera positions to be a bit amusing (like the 2D view of the ledger books that in 3D has you standing on the counter instead).
 
 Camera buttons in studio now work, as do the in scene movable camera views, though selecting the in scene cameras can be fun since the dropdown is invisible.
+
+Compatibility with POVX plugin: https://github.com/Animal42069/HS2_PovX version 1.2.2(+)
+
+Lock mode, when POVX is engaged pressing lock button (default 'L') will freeze the head updates and lock the POV camera in place. Press L again to release. Handy to avoid some of the shaky-cam jerkiness.
+
+New Standing Mode Tools:
+
+POV Tool (eyeball icon). Available when POVX is. 
+- Press grip or A to engage POV mode. 
+- Pressing trigger when POV is not engaged will engage POV
+- Pressing trigger when POV is engaged will switch characters
+- Long press trigger (1.5 secs, until it rumbles) and release will engage lock mode (discussed above)
+- Press the touchpad button to switch focus characters (look at target)
+
+Gimbal Tool (err, rotatory icon thingy)
+- Press grip or A button and rotate controller to rotate view. Allows full 3d rotation rather than just the y rotation of the warp tool
+
+
 
 # Known Issues
 
@@ -40,7 +58,7 @@ Some notes on VR graphics settings:
 Since the VR interface is in scene TAA applies to it and tends to make it a bit blurry, probably stick to SMAA in scenes (though I break this guideline all the time...)\
 For best VR performance I recommend turning off MSAA and Realtime Reflection Probes (on Settings) and lowering the SSS settings Postprocess Iterations to 2 and Shader Iterations per pass to 4. Deactivating dither may help, although I didn't notice a big difference.
 
-Note: Be careful with shadows, it might be a quirk of my setup but turning off shadows cuts my frame rate in half. Make sure shadows are on in graphics and in any other mods touching the graphics settings.
+Note: Be careful with shadows, it might be a quirk of my setup but turning off shadows cuts my frame rate in half. Make sure shadows are on in graphics and in any other mods touching the graphics settings. You need at least one directional light with shadows on in a scene.
 
 # Simple Installation
 
