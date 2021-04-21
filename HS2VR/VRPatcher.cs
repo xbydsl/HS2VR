@@ -133,9 +133,12 @@ namespace HS2VR
         // Not allowed to change FOV in VR...just, prevent it totally
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Camera), "set_fieldOfView")]
-        public static bool SetFOV()
+        public static bool SetFOV(Camera __instance)
         {
-            return false;
+            if (__instance.name == "MainCamera")
+                return false;
+            else
+                return true;
         } 
 
         [HarmonyPrefix]
@@ -159,7 +162,7 @@ namespace HS2VR
             //VRPatcher.MoveVRCameraToMainCamera();
 
             if (___heroine != null)
-                AdjustForFOVDifference(___mainCamera.transform, ___heroine.transform, TITLE_FOV, VR_FOV, TITLE_DISTANCE_ADJ_RATIO);
+                AdjustForFOVDifference(___mainCamera.transform, ___heroine.transform, TITLE_FOV, GetVRFOV(), TITLE_DISTANCE_ADJ_RATIO);
 
             VRPatcher.MoveVRCameraToTarget(___mainCamera.transform);
         }
@@ -171,7 +174,7 @@ namespace HS2VR
             VRLog.Info("Setting VR Camera to game camera (Lobby SetCamChar)");
 
             if (__instance.heroines != null && __instance.heroines[0] != null)
-                AdjustForFOVDifference(___cam.transform, __instance.heroines[0].transform, LOBBY_FOV, VR_FOV, LOBBY_DISTANCE_ADJ_RATIO, true);
+                AdjustForFOVDifference(___cam.transform, __instance.heroines[0].transform, LOBBY_FOV, GetVRFOV(), LOBBY_DISTANCE_ADJ_RATIO, true);
 
             VRPatcher.MoveVRCameraToTarget(___cam.transform);
         }
@@ -183,16 +186,20 @@ namespace HS2VR
             VRLog.Info("Setting VR Camera to game camera (Special TreatmentRoom SetCameraPosition)");
 
             if (__instance.ConciergeHeroine != null)
-                AdjustForFOVDifference(___cam.transform, __instance.ConciergeHeroine.transform, TITLE_FOV, VR_FOV, TITLE_DISTANCE_ADJ_RATIO, true);
+                AdjustForFOVDifference(___cam.transform, __instance.ConciergeHeroine.transform, TITLE_FOV, GetVRFOV(), TITLE_DISTANCE_ADJ_RATIO, true);
 
             VRPatcher.MoveVRCameraToTarget(___cam.transform);
         }
 
-        private const float VR_FOV = 109f;
         private const float LOBBY_FOV = 23f;
         private const float TITLE_FOV = 40f;
         private const float TITLE_DISTANCE_ADJ_RATIO = .5f;
         private const float LOBBY_DISTANCE_ADJ_RATIO = .8f;
+
+        private static float GetVRFOV()
+        {
+            return VR.Camera.SteamCam.camera.fieldOfView;
+        }
 
         private static float AdjustForFOVDifference(Transform cam, Transform target, float initialFov, float targetFov, float distanceAdjustmentFactor, bool skipYAdjustment = false)
         {
@@ -279,7 +286,7 @@ namespace HS2VR
                         if (chara.heroine != null)
                         {
                             VRLog.Info($"Adjusting towards: {chara.heroine.chaFile.parameter.fullname}");
-                            AdjustForFOVDifference(camTransform, chara.heroine.transform, TITLE_FOV, VR_FOV, TITLE_DISTANCE_ADJ_RATIO);
+                            AdjustForFOVDifference(camTransform, chara.heroine.transform, TITLE_FOV, GetVRFOV(), TITLE_DISTANCE_ADJ_RATIO);
                         }
                     }
                     VRLog.Info($"Setting VR Camera to game camera (CommandList Add) {camTransform}");
@@ -293,7 +300,7 @@ namespace HS2VR
                     if (chara.heroine != null)
                     {
                         VRLog.Info($"Adjusting towards: {chara.heroine.chaFile.parameter.fullname}");
-                        AdjustForFOVDifference(__instance.advScene.advCamera.transform, chara.heroine.transform, TITLE_FOV, VR_FOV, TITLE_DISTANCE_ADJ_RATIO);
+                        AdjustForFOVDifference(__instance.advScene.advCamera.transform, chara.heroine.transform, TITLE_FOV, GetVRFOV(), TITLE_DISTANCE_ADJ_RATIO);
                     }
                 }
                 VRLog.Info($"Setting VR Camera to game camera (CommandList Add) {__instance.advScene.advCamera.transform.position}");
@@ -312,7 +319,7 @@ namespace HS2VR
                 if (chara.heroine != null)
                 {
                     VRLog.Info($"Adjusting towards: {chara.heroine.chaFile.parameter.fullname}");
-                    AdjustForFOVDifference(__instance.advCamera.transform, chara.heroine.transform, TITLE_FOV, VR_FOV, TITLE_DISTANCE_ADJ_RATIO);
+                    AdjustForFOVDifference(__instance.advCamera.transform, chara.heroine.transform, TITLE_FOV, GetVRFOV(), TITLE_DISTANCE_ADJ_RATIO);
                 }
             }
 
@@ -330,7 +337,7 @@ namespace HS2VR
                 if (chara.heroine != null)
                 {
                     VRLog.Info($"Adjusting towards: {chara.heroine.chaFile.parameter.fullname}");
-                    AdjustForFOVDifference(__instance.advCamera.transform, chara.heroine.transform, TITLE_FOV, VR_FOV, LOBBY_DISTANCE_ADJ_RATIO);
+                    AdjustForFOVDifference(__instance.advCamera.transform, chara.heroine.transform, TITLE_FOV, GetVRFOV(), LOBBY_DISTANCE_ADJ_RATIO);
                 }
             }
 
@@ -361,7 +368,7 @@ namespace HS2VR
             if (heroine != null)
             {
                 VRLog.Info($"Adjusting towards: {heroine.chaFile.parameter.fullname}");
-                float moveDistance = AdjustForFOVDifference(_ctrl.transform, heroine.transform, TITLE_FOV, VR_FOV, LOBBY_DISTANCE_ADJ_RATIO, true);
+                float moveDistance = AdjustForFOVDifference(_ctrl.transform, heroine.transform, TITLE_FOV, GetVRFOV(), LOBBY_DISTANCE_ADJ_RATIO, true);
                 _ctrl.TargetPos = _ctrl.transform.InverseTransformPoint(_ctrl.transform.position);
                 _ctrl.CameraDir = Vector3.MoveTowards(_ctrl.CameraDir, _ctrl.TargetPos, moveDistance);
             }
@@ -378,7 +385,7 @@ namespace HS2VR
             if (heroine != null)
             {
                 VRLog.Info($"Adjusting towards: {heroine.chaFile.parameter.fullname}");
-                float moveDistance = AdjustForFOVDifference(_ctrl.transform, heroine.transform, TITLE_FOV, VR_FOV, LOBBY_DISTANCE_ADJ_RATIO, true);
+                float moveDistance = AdjustForFOVDifference(_ctrl.transform, heroine.transform, TITLE_FOV, GetVRFOV(), LOBBY_DISTANCE_ADJ_RATIO, true);
                 _ctrl.TargetPos = _ctrl.transform.InverseTransformPoint(_ctrl.transform.position);
                 _ctrl.CameraDir = Vector3.MoveTowards(_ctrl.CameraDir, _ctrl.TargetPos, moveDistance);
             }
