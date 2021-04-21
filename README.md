@@ -10,6 +10,33 @@ The present Honey Select 2 VR mod is based off (https://github.com/Ooetksh/Koika
 
 Everything, albeit with some quirks. Main game, Maker and Studio are all playable. The full game experience, only in 3D.
 
+# FAQ
+
+## No Controllers/I don't want to use mouse/keyboard
+Switch to Standing mode then (def: Ctrl+c, Ctrl+c [dbl tap it]). Alternatively change the DefaultMode in VRSettings.xml.
+
+## Display is Blurry
+Turn off TAA. Disable BetterAA (or uninstall it). Switch to SMAA (in Graphics->Post Processing)
+
+## Can I use this version of HS2Graphics without VR?
+Yep. In which case you just need the HS2Graphics zip file. Ignore the other two.
+
+## Mouse input is registering at all or not registering on parts of the window
+The VR input system actually moves the system mouse pointer. Remove HMD and make sure there isn't another window over the game window (or run game full screen). Probably the pointer has escaped and you are actually clicking into something else.
+
+## Framerate Issues
+Turn off MSAA. Turn off Realtime Reflection Probes (in Graphics->Settings).\
+Keep 1 Directional Light with Shadows enabled (you can turn down shadow strength all the way to 0 if you like, just leave shadows enabled). If you don't know what this means, just don't turn off shadows globally or turn off shadows on the Cam light in specific.\
+Turn down/off SSS.\
+Turn down RenderScale (in VRSettings.xml file). Something along a .6 to a .8 should give you a nice little bump in frame rate.
+
+## I have the hardware, can I make it look better?
+In addition to the usual graphics quality settings, turn up RenderScale (in VRSettings.xml file). Something along 1.2 to 1.4 will look nicely sharper. Note above 1.8 will be a slideshow on best possible current hardware.
+
+## What VR sets are supported?
+Anything that supports SteamVR (OpenVR) should work just fine.
+
+
 # Specific Improvements from V 0.2.0
 
 Plugin coexists with the official VR plugin now, you can have them this installed and still use official VR as you wish.
