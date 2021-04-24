@@ -103,7 +103,7 @@ Optionally (but recommended), install the included version of HS2Graphics (same 
 
 
 # Installation Detail
-## Enabling VR
+## Enabling VR - Only Needed if you don't use the attached globalgamemanagers file
 
 
 - Get UABE (https://github.com/DerPopo/UABE).
