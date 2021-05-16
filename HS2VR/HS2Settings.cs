@@ -62,6 +62,14 @@ namespace HS2VR
         private float _StandingDialogueHeightAdjustment = 3.0f;
         public float StandingDialogueHeightAdjustment { get { return _StandingDialogueHeightAdjustment; } set { _StandingDialogueHeightAdjustment = value; } }
 
+        private bool _ScalePOVToImpersonatedCharacter = true;
+        [XmlComment("Scale POV View to Impersonated Character (Thinks look bigger when you're smaller)")]
+        public bool ScalePOVToImpersonatedCharacter { get { return _ScalePOVToImpersonatedCharacter; } set { _ScalePOVToImpersonatedCharacter = value; } }
+
+        private float _ScalePOVTOImpersonatedCharacterScaleCoeff = 1.0f;
+        [XmlComment("Coefficient applied to POV scaling, multiplies the apparent size differential, 1.0 matches scaling change to POV character height. >1 increases apparent size difference, <1 decreases apparent difference")]
+        public float ScalePOVToImpersonatedCharacterScaleCoeff { get { return _ScalePOVTOImpersonatedCharacterScaleCoeff;  } set { _ScalePOVTOImpersonatedCharacterScaleCoeff = value; } }
+
         private bool _SuppressCamlightShadows = true;
         [XmlComment("Suppresses the shadows on the camlight directional light (if present)")]
         public bool SuppressCamlightShadows {  get { return _SuppressCamlightShadows; } set { _SuppressCamlightShadows = value; } }

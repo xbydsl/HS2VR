@@ -39,6 +39,7 @@ namespace HS2VR
                     getValidCharacterFromFocusMethod = AccessTools.Method(povxController, "GetValidCharacterFromFocus");
                     setPovCharacterMethod = AccessTools.Method(povxController, "SetPoVCharacter");
                     setTargetCharacterMethod = AccessTools.Method(povxController, "SetTargetCharacter");
+                    povCharacterField = AccessTools.Field(povxController, "povCharacter");
                     harmony.Patch(AccessTools.Method(povxController, "UpdatePoVCamera"), null, new HarmonyMethod(typeof(VRPatcher), "syncPOVXCamera"), null, null);
                     harmony.Patch(AccessTools.Method(povxController, "UpdateMouseLook"), new HarmonyMethod(typeof(VRPatcher), "POVMouseLookOverride"));
                     POVAvailable = true;
@@ -61,6 +62,7 @@ namespace HS2VR
         private static FieldInfo povEnabledField;
         private static FieldInfo targetFocusField;
         private static FieldInfo povFocusField;
+        private static FieldInfo povCharacterField;
 
         public static bool povEnabledValue { get; set; }
         public static bool POVPaused { get; set; }
@@ -118,7 +120,24 @@ namespace HS2VR
                 povxOriginalRotation = VR.Camera.Origin.rotation;
             }
             povEnabledValue = povCurrentlyEnabled;
+            if (originalPOVScale == 0.0f)
+                originalPOVScale = VR.Settings.IPDScale;
+
+            ChaControl povCharacter = (ChaControl)povCharacterField.GetValue(null);
+            if (povEnabledValue && !POVPaused && povCharacter != null && ((HS2VRSettings)VR.Settings).ScalePOVToImpersonatedCharacter)
+            {
+                // Formula is IPDScale * ( Character Height difference from 75 height * Scaling Coefficient )
+                float scaleAdjustment = (FindDescendant(povCharacter.objAnim.transform, "cf_N_height").localScale.y - .95f) * ((HS2VRSettings)VR.Settings).ScalePOVToImpersonatedCharacterScaleCoeff;
+                VR.Settings.IPDScale = originalPOVScale * (1 + scaleAdjustment);
+            }
+            else
+            {
+                VR.Settings.IPDScale = originalPOVScale;
+            }
+
         }
+
+        private static float originalPOVScale = 0.0f;
 
         public static void syncPOVXCamera()
         {
@@ -495,6 +514,24 @@ namespace HS2VR
                 VRManager.Instance.Mode.MoveToPosition(target.position, false);
             }
             VRLog.Info($"New VR Camera Pos: {VR.Camera.Origin.position}");
+        }
+
+        public static Transform FindDescendant(Transform start, string name)
+        {
+            if (start == null)
+            {
+                return null;
+            }
+
+            if (start.name.Equals(name))
+                return start;
+            foreach (Transform t in start)
+            {
+                Transform res = FindDescendant(t, name);
+                if (res != null)
+                    return res;
+            }
+            return null;
         }
     }
 }

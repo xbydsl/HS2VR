@@ -74,7 +74,7 @@ namespace HS2VR
         public void Update()
         {
             VRPatcher.handlePOVXStatus();
-            if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && Studio.Studio.Instance.ociCamera != null)
+            if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && Studio.Studio.Instance?.ociCamera != null)
             {
                 VRPatcher.SyncToMainTransform(Studio.Studio.Instance.ociCamera.objectItem.transform, false);
             }
