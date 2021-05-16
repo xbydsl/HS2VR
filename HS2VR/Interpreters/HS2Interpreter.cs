@@ -69,30 +69,6 @@ namespace HS2VR.Interpreters
                 StartCoroutine(FindCamlight());
                 loaded = true;
             }
-            if (QualitySettings.realtimeReflectionProbes)
-                StartCoroutine(UpdateVRGraphics());
-        }
-
-        // Give it a few frames and then flip some of these settings to VR friendly modes
-        private IEnumerator UpdateVRGraphics()
-        {
-            yield return null;
-            yield return null;
-            yield return null;
-
-            try
-            {
-                QualitySettings.realtimeReflectionProbes = false;
-                VR.Camera.SteamCam.camera.allowMSAA = false;
-                VR.Camera.SteamCam.camera.GetComponent<PostProcessLayer>().antialiasingMode = PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing;
-                VRLog.Info("VR Graphics QualitySettings Adapted");
-            }
-            catch (Exception e)
-            {
-                VRLog.Warn($"Unable to deactive extra Graphics Settings: {e.Message}", e);
-            }
-
-
         }
 
         public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
