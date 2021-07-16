@@ -38,3 +38,4 @@ sysinfo.txt
 /HS2VR/Libs/*.dll
 
 release
+/packages

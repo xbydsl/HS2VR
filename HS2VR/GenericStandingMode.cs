@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HS2VR.Capture;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,16 +59,25 @@ namespace HS2VR
 
             base.OnStart();
 
+            _CapturePanorama = VR.Camera.SteamCam.gameObject.AddComponent<HS2VRCapturePanorama>();
+
             //  SteamVR.instance.overlay.ShowKeyboard(0, 0, "Keyboard", 256, "", false, 0);
-          //  SteamVR_Events.System(Valve.VR.EVREventType.VREvent_KeyboardClosed).Listen(OnKeyboardClosed);
+            //  SteamVR_Events.System(Valve.VR.EVREventType.VREvent_KeyboardClosed).Listen(OnKeyboardClosed);
 
 
             MoveToPosition(VRPlugin.CameraResetPos, VRPlugin.CameraResetRot, false);
         }
 
+        private HS2VRCapturePanorama _CapturePanorama;
+
         private void OnKeyboardClosed(VREvent_t args)
         {
             
+        }
+
+        public void OnDestroy()
+        {
+            Destroy(_CapturePanorama);
         }
 
         protected override void OnUpdate()

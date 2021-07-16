@@ -5,6 +5,7 @@ using VRGIN.Helpers;
 using UnityEngine;
 using VRGIN.Core;
 using HarmonyLib;
+using Obi;
 
 namespace HS2VR
 {
@@ -73,6 +74,10 @@ namespace HS2VR
 
         public void Update()
         {
+            if (!VR_ACTIVATED)
+                return;
+
+            //  VRLog.Info($"Main Cam: {Camera.main} VR Cam: {VRCamera.Instance.name}");
             VRPatcher.handlePOVXStatus();
             if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && Studio.Studio.Instance?.ociCamera != null)
             {

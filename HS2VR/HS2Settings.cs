@@ -101,7 +101,25 @@ namespace HS2VR
 
         public float RotationAngle { get { return _RotationAngle; } set { _RotationAngle = value; } }
         private float _RotationAngle = 45f;
+        public CaptureConfig Capture { get { return _CaptureConfig; } set { _CaptureConfig = value; } }
+        private CaptureConfig _CaptureConfig = new CaptureConfig();
     }
+
+    public class CaptureConfig
+    {
+        public XmlKeyStroke Shortcut = new XmlKeyStroke("Ctrl + F12");
+        public bool Stereoscopic = true;
+        public bool WithEffects = true;
+        public bool SetCameraUpright = true;
+        public bool HideGUI = false;
+        //public bool HideControllers = false;
+
+        public CaptureConfig()
+        {
+
+        }
+    }
+    
 
     [XmlRoot("KeySet")]
     public class KeySet

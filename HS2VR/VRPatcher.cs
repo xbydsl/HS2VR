@@ -43,14 +43,14 @@ namespace HS2VR
                     harmony.Patch(AccessTools.Method(povxController, "UpdatePoVCamera"), null, new HarmonyMethod(typeof(VRPatcher), "syncPOVXCamera"), null, null);
                     harmony.Patch(AccessTools.Method(povxController, "UpdateMouseLook"), new HarmonyMethod(typeof(VRPatcher), "POVMouseLookOverride"));
                     POVAvailable = true;
-                }                
+                }               
             }
             catch (Exception ex)
             {
                 VRLog.Error(ex.ToString(), Array.Empty<object>());
             }
             povEnabledValue = false;
-        }
+        }      
 
         public static bool POVAvailable = false;
 
