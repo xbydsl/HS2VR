@@ -70,8 +70,8 @@ namespace HS2VR
             if (controllerCollider == null) return;
 
             //For each controller, make it collidable with all dynaic bones (Did I miss any?)
-            AddControllerColliderToDBv2(controllerCollider, dynamicBonesV2);
             AddControllerColliderToDB(controllerCollider, dynamicBones);
+            AddControllerColliderToDBv2(controllerCollider, dynamicBonesV2);            
         }
 
 

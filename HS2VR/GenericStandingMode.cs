@@ -83,16 +83,63 @@ namespace HS2VR
         protected override void OnUpdate()
         {
             CheckInput();   
+        }   
+
+        private void BuildTool(string tool, List<Type> toolList)
+        {
+            switch (tool.Trim().ToUpper())
+            {
+                case "MENU":
+                    toolList.Add(typeof(MenuTool));
+                    break;
+                case "WARP":
+                    toolList.Add(typeof(WarpTool));
+                    break;
+                case "PLAY":
+                    if (Application.productName != "StudioNEOV2")
+                        toolList.Add(typeof(PlayTool));
+                    break;
+                case "CAM":
+                    if (Application.productName == "StudioNEOV2")
+                        toolList.Add(typeof(CameraTool));
+                    break;
+                case "POV":
+                    if (VRPatcher.POVAvailable)
+                        toolList.Add(typeof(POVTool));
+                    break;
+                case "ROT":
+                    toolList.Add(typeof(RotationTool));
+                    break;
+            }
+        }
+
+        public override IEnumerable<Type> LeftTools
+        {
+            get
+            {
+                List<Type> toolList = new List<Type>();
+                ((HS2VRSettings)VR.Settings).LeftTools.Split(',').ToList().ForEach(s => BuildTool(s, toolList));
+                return toolList;              
+            }
+        }
+
+        public override IEnumerable<Type> RightTools
+        {
+            get
+            {
+                List<Type> toolList = new List<Type>();
+                ((HS2VRSettings)VR.Settings).RightTools.Split(',').ToList().ForEach(s => BuildTool(s, toolList));
+                return toolList;
+            }
         }
 
         public override IEnumerable<Type> Tools
         {
             get
             {
-                if (VRPatcher.POVAvailable)
-                    return base.Tools.Concat(new Type[] { typeof(PlayTool), typeof(POVTool), typeof(RotationTool)});
-                else
-                    return base.Tools.Concat(new Type[] { typeof(PlayTool), typeof(RotationTool) });
+                return new Type[] { };
+
+                
             }
         }
     }

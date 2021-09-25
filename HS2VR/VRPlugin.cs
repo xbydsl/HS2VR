@@ -6,6 +6,8 @@ using UnityEngine;
 using VRGIN.Core;
 using HarmonyLib;
 using Obi;
+using BepInEx.Logging;
+using Studio;
 
 namespace HS2VR
 {
@@ -19,6 +21,10 @@ namespace HS2VR
     public class VRPlugin : BaseUnityPlugin
     {
         public static bool VR_ACTIVATED = false;
+
+        public static VRPlugin Instance;
+
+        public static BepInEx.Logging.ManualLogSource MessageLogger => Instance.Logger;
 
         /// <summary>
         /// Put the name of your plugin here.
@@ -35,7 +41,7 @@ namespace HS2VR
         {
             get
             {
-                return "0.0.7.7";
+                return "0.0.9.0";
             }
         }
 
@@ -47,6 +53,7 @@ namespace HS2VR
         /// </summary>
         void Awake()
         {
+            Instance = this;
 
             CameraResetPos = Vector3.zero;
             CameraResetRot = Quaternion.identity;
@@ -79,11 +86,11 @@ namespace HS2VR
 
             //  VRLog.Info($"Main Cam: {Camera.main} VR Cam: {VRCamera.Instance.name}");
             VRPatcher.handlePOVXStatus();
-            if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && Studio.Studio.Instance?.ociCamera != null)
+            if (Application.productName == "StudioNEOV2" && Studio.Studio.Instance?.ociCamera != null)
             {
                 VRPatcher.SyncToMainTransform(Studio.Studio.Instance.ociCamera.objectItem.transform, false);
             }
-            else if (VR_ACTIVATED && Application.productName == "StudioNEOV2" && VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
+            else if (Application.productName == "StudioNEOV2" && VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
             {                                
                 if (!VRPatcher.povEnabledValue)
                     VRPatcher.SyncToMainTransform(Studio.Studio.Instance.cameraCtrl.transform, false);

@@ -43,15 +43,55 @@ namespace HS2VR
                     harmony.Patch(AccessTools.Method(povxController, "UpdatePoVCamera"), null, new HarmonyMethod(typeof(VRPatcher), "syncPOVXCamera"), null, null);
                     harmony.Patch(AccessTools.Method(povxController, "UpdateMouseLook"), new HarmonyMethod(typeof(VRPatcher), "POVMouseLookOverride"));
                     POVAvailable = true;
-                }               
+
+                }
+
+                Type hSwitcher = AccessTools.TypeByName("HS2_HCharaSwitcher.HS2_HCharaSwitcher");
+                if (hSwitcher != null)
+                {
+                    VRLog.Info("Hooked up to Hara switcher!");
+                    harmony.Patch(AccessTools.Method(hSwitcher, "ChangeCharacter"), new HarmonyMethod(typeof(VRPatcher), "syncHaraSwitch"), null, null, null);
+                }
+                else
+                {
+                    VRLog.Warn("No Hara switcher!");
+                }
+
+
+                Type subtitleType = AccessTools.TypeByName("KK_Plugins.Subtitles");
+                if (subtitleType != null)
+                {
+                    dicdiclstVoiceListField = AccessTools.Field(typeof(HVoiceCtrl), "dicdiclstVoiceList");
+                    harmony.Patch(AccessTools.Method(subtitleType.GetNestedType("Hooks", AccessTools.all), "DisplayHSubtitle"), new HarmonyMethod(typeof(VRPatcher), "DisplayHSubtitle"));
+                }
+
             }
             catch (Exception ex)
             {
                 VRLog.Error(ex.ToString(), Array.Empty<object>());
             }
             povEnabledValue = false;
-        }      
+            mCharSwitchPreservePos = false;
+            mPositionChangeResetPov = false;
+        }
 
+        public static bool DisplayHSubtitle(Manager.Voice.Loader loader, AudioSource audioSource)
+        {
+            foreach (Dictionary<int, Dictionary<int, HVoiceCtrl.VoiceList>> a in (Dictionary<int, Dictionary<int, HVoiceCtrl.VoiceList>>[])dicdiclstVoiceListField.GetValue(HSceneManager.Instance.Hscene.ctrlVoice))
+                foreach (Dictionary<int, HVoiceCtrl.VoiceList> b in a.Values)
+                    foreach (HVoiceCtrl.VoiceList c in b.Values)
+                        foreach (Dictionary<int, HVoiceCtrl.VoiceListInfo> d in c.dicdicVoiceList)
+                            foreach (var e in d.Values)
+                                if (e.nameFile == loader.asset && e.pathAsset == loader.bundle)
+                                {
+                                    VRSubtitle.DisplayVRSubtitle(audioSource.gameObject, e.word);
+                                    return false;
+                                }
+
+
+            return true;
+        }
+        private static FieldInfo dicdiclstVoiceListField;
         public static bool POVAvailable = false;
 
         private static MethodInfo enablePOVMethod;
@@ -66,6 +106,10 @@ namespace HS2VR
 
         public static bool povEnabledValue { get; set; }
         public static bool POVPaused { get; set; }
+        public static bool mCharSwitchPreservePos { get; set; }
+        public static bool mPositionChangeResetPov { get; set; }
+
+
 
         public static void CharaCycleKeyPress()
         {
@@ -74,7 +118,7 @@ namespace HS2VR
             povFocusField.SetValue(null, focusTarget);
             ChaControl cha = (ChaControl)getValidCharacterFromFocusMethod.Invoke(null, new object[] { focusTarget });
             setPovCharacterMethod.Invoke(null, new object[] { cha });
-            setTargetCharacterMethod.Invoke(null, new object[] { cha });            
+            setTargetCharacterMethod.Invoke(null, new object[] { cha });
         }
 
         public static bool POVMouseLookOverride()
@@ -142,6 +186,14 @@ namespace HS2VR
         public static void syncPOVXCamera()
         {
 
+            if (mPositionChangeResetPov)
+            {
+                mPositionChangeResetPov = false;
+                POVPaused = !POVPaused;
+                syncPOVXCamera();
+                POVPaused = !POVPaused;
+                return;
+            }
             handlePOVXStatus();
             if (povEnabledValue && !POVPaused)
             {
@@ -149,16 +201,22 @@ namespace HS2VR
             }
         }
 
+        public static void syncHaraSwitch(string card, int id)
+        {
+            VRLog.Info("Changing char !");
+            mCharSwitchPreservePos = true;
+        }
+
         // Not allowed to change FOV in VR...just, prevent it totally
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Camera), "set_fieldOfView")]
         public static bool SetFOV(Camera __instance)
         {
-            if (__instance.name == "MainCamera")
+            if (__instance.name == "MainCamera" || __instance.name.Contains("VRGIN") || __instance.name == "Main Camera")
                 return false;
             else
                 return true;
-        } 
+        }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LogoScene), "Start")]
@@ -295,11 +353,11 @@ namespace HS2VR
             {
                 if (__instance.CommandPacks[___currentLine].Args[1].Equals("Camera"))
                 {
-                    string camEventName = __instance.CommandPacks[___currentLine].Args[0];                    
+                    string camEventName = __instance.CommandPacks[___currentLine].Args[0];
                     GameObject camGO = GameObject.Find(camEventName);
                     Transform camTransform = camGO == null ? __instance.advScene.advCamera.transform : camGO.transform;
                     VRLog.Info($"Looking for GO {camEventName} Found: {camGO}");
-                    
+
                     foreach (ADV.CharaData chara in __instance.commandController.Characters.Values)
                     {
                         if (chara.heroine != null)
@@ -324,7 +382,7 @@ namespace HS2VR
                 }
                 VRLog.Info($"Setting VR Camera to game camera (CommandList Add) {__instance.advScene.advCamera.transform.position}");
                 VRPatcher.MoveVRCameraToTarget(__instance.advScene.advCamera.transform, false);
-            }            
+            }
         }
 
         [HarmonyPostfix]
@@ -361,7 +419,7 @@ namespace HS2VR
             }
 
             VRPatcher.MoveVRCameraToTarget(__instance.advCamera.transform, false);
-        }  
+        }
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Studio.CameraControl), "Import")]
@@ -392,7 +450,7 @@ namespace HS2VR
                 _ctrl.CameraDir = Vector3.MoveTowards(_ctrl.CameraDir, _ctrl.TargetPos, moveDistance);
             }
 
-            VRLog.Info("Setting VR Camera to game camera");            
+            VRLog.Info("Setting VR Camera to game camera");
             VRPatcher.MoveVRCameraToMainCamera();
         }
 
@@ -428,8 +486,8 @@ namespace HS2VR
         [HarmonyPatch(typeof(NeckLookControllerVer2), "LateUpdate")]
         public static bool NeckLookControllerVer2LateUpdate(NeckLookControllerVer2 __instance)
         {
-            if (__instance.ptnNo == 1 || __instance.ptnNo == 2)                
-                __instance.target = VR.Camera.Head; 
+            if (__instance.ptnNo == 1 || __instance.ptnNo == 2)
+                __instance.target = VR.Camera.Head;
 
             return true;
         }
@@ -445,7 +503,7 @@ namespace HS2VR
 
             if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
             {
-                VRPatcher.SyncToMainTransform(__instance.transform, false);                
+                VRPatcher.SyncToMainTransform(__instance.transform, false);
             }
         }
 
@@ -473,9 +531,11 @@ namespace HS2VR
             if (!positionOnly)
             {
                 origin.rotation = target.rotation;
-
             }
+
+
             Vector3 position = target.position;
+
             if (adjustHead)
                 origin.position = position - (head.position - origin.position);
             else
@@ -488,6 +548,13 @@ namespace HS2VR
             VRPlugin.CameraResetRot = Camera.main.transform.rotation;
 
             VRLog.Info($"Moving VR Camera to {Camera.main.transform.position} Head Cam Y: {VR.Camera.SteamCam.head.position.y}");
+            if (mCharSwitchPreservePos)
+            {
+                mCharSwitchPreservePos = false;
+                VRLog.Info($"Skipping camera transform change, character changed only.");
+                return;
+            }
+
             if (!positionOnly)
             {
                 VRManager.Instance.Mode.MoveToPosition(Camera.main.transform.position, Camera.main.transform.rotation, false);
@@ -497,6 +564,11 @@ namespace HS2VR
                 VRManager.Instance.Mode.MoveToPosition(Camera.main.transform.position, false);
             }
             VRLog.Info($"New VR Camera Pos: {VR.Camera.Origin.position}");
+            if (POVPaused)
+            {
+                VRLog.Info($"Were in pov mode-released - restoring pov camera location on next frame!");
+                mPositionChangeResetPov = true;
+            }
         }
 
         public static void MoveVRCameraToTarget(Transform target, bool positionOnly = false)
@@ -535,3 +607,4 @@ namespace HS2VR
         }
     }
 }
+

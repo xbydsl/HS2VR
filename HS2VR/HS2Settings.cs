@@ -46,7 +46,7 @@ namespace HS2VR
 
         private HS2Shortcuts _HS2Shortcuts = new HS2Shortcuts();
         [XmlComment("Additional HS2 Shortcuts. Refer to https://docs.unity3d.com/ScriptReference/KeyCode.html for a list of available keys.")]
-        public HS2Shortcuts HS2Shortcuts { get { return _HS2Shortcuts; } set { _HS2Shortcuts = value; } } 
+        public HS2Shortcuts HS2Shortcuts { get { return _HS2Shortcuts; } set { _HS2Shortcuts = value; } }
 
         [XmlElement(Type = typeof(List<KeySet>))]
         public List<KeySet> KeySets { get { return _KeySets; } set { _KeySets = value; } }
@@ -54,7 +54,7 @@ namespace HS2VR
 
         private string _DefaultMode = "Seated";
         [XmlComment("Seated - Mouse/KB, Standing - Controllers")]
-        public string DefaultMode {  get { return _DefaultMode;  } set { _DefaultMode = value; } }
+        public string DefaultMode { get { return _DefaultMode; } set { _DefaultMode = value; } }
 
         private float _SeatedDialogueHeightAdjustment = 3.0f;
         public float SeatedDialogueHeightAdjustment { get { return _SeatedDialogueHeightAdjustment; } set { _SeatedDialogueHeightAdjustment = value; } }
@@ -68,15 +68,15 @@ namespace HS2VR
 
         private float _ScalePOVTOImpersonatedCharacterScaleCoeff = 1.0f;
         [XmlComment("Coefficient applied to POV scaling, multiplies the apparent size differential, 1.0 matches scaling change to POV character height. >1 increases apparent size difference, <1 decreases apparent difference")]
-        public float ScalePOVToImpersonatedCharacterScaleCoeff { get { return _ScalePOVTOImpersonatedCharacterScaleCoeff;  } set { _ScalePOVTOImpersonatedCharacterScaleCoeff = value; } }
+        public float ScalePOVToImpersonatedCharacterScaleCoeff { get { return _ScalePOVTOImpersonatedCharacterScaleCoeff; } set { _ScalePOVTOImpersonatedCharacterScaleCoeff = value; } }
 
         private bool _SuppressCamlightShadows = true;
         [XmlComment("Suppresses the shadows on the camlight directional light (if present)")]
-        public bool SuppressCamlightShadows {  get { return _SuppressCamlightShadows; } set { _SuppressCamlightShadows = value; } }
+        public bool SuppressCamlightShadows { get { return _SuppressCamlightShadows; } set { _SuppressCamlightShadows = value; } }
 
         private bool _ReplaceCamLightWSpotLight = false;
         [XmlComment("Replaces the camlight directional light with a spot light strapped to the head.")]
-        public bool ReplaceCamLightWSpotLight {  get { return _ReplaceCamLightWSpotLight; } set { _ReplaceCamLightWSpotLight = value; } }
+        public bool ReplaceCamLightWSpotLight { get { return _ReplaceCamLightWSpotLight; } set { _ReplaceCamLightWSpotLight = value; } }
 
         public bool UsingHeadPos { get { return _UsingHeadPos; } set { _UsingHeadPos = value; } }
         private bool _UsingHeadPos = false;
@@ -103,6 +103,13 @@ namespace HS2VR
         private float _RotationAngle = 45f;
         public CaptureConfig Capture { get { return _CaptureConfig; } set { _CaptureConfig = value; } }
         private CaptureConfig _CaptureConfig = new CaptureConfig();
+
+        [XmlComment("Tools to use with the Left Controller Options (in order of appearance, comma separated): MENU, WARP, PLAY, CAM, POV, ROT")]
+        public string LeftTools {  get { return _LeftTools; } set { _LeftTools = value; } }
+        private string _LeftTools = "MENU, WARP, PLAY, CAM, POV, ROT";
+        [XmlComment("Tools to use with the Right Controller Options (in order of appearance, comma separated): MENU, WARP, PLAY, CAM, POV, ROT")]
+        public string RightTools { get { return _RightTools; } set { _RightTools = value; } }
+        private string _RightTools = "MENU, WARP, PLAY, CAM, POV, ROT";
     }
 
     public class CaptureConfig
