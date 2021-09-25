@@ -36,6 +36,9 @@ In addition to the usual graphics quality settings, turn up RenderScale (in VRSe
 ## What VR sets are supported?
 Anything that supports SteamVR (OpenVR) should work just fine.
 
+## Various ingame fluids aren't showing
+In the game settings, set the various fluid types to Simplified. That'll fix most, though the drip from her afterwards does not seem to work, no fix for that currently available.
+
 
 # Specific Improvements from V 0.2.0
 
