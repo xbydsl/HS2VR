@@ -15,14 +15,14 @@ Everything, albeit with some quirks. Main game, Maker and Studio are all playabl
 ## No Controllers/I don't want to use mouse/keyboard
 Switch to Standing mode then (def: Ctrl+c, Ctrl+c [dbl tap it]). Alternatively change the DefaultMode in VRSettings.xml.
 
+## I can see the title scene in VR but have no UI
+Two possibilities, One: you are in Standing mode (check VRSettings.xml to see your startup default) and have no controllers. Try making sure the controller is tracking and visible before starting HS2, things don't always attach correctly if you start the controller after the program starts. Two: the Steam and GlobalGameManagers patched in correctly to start Unity in VR but the plugin itself isn't installed or failed to start. Double check that the HS2VR.dll is in BepInEx/Plugins/HS2VR and/or check the output_log.txt and see if something killed the VR plugin from starting (missing prereqs or the like).
+
 ## Display is Blurry
 Turn off TAA. Disable BetterAA (or uninstall it). Switch to SMAA (in Graphics->Post Processing)
 
-## Can I use this version of HS2Graphics without VR?
-Yep. In which case you just need the HS2Graphics zip file. Ignore the other two.
-
 ## Mouse input is registering at all or not registering on parts of the window
-The VR input system actually moves the system mouse pointer. Remove HMD and make sure there isn't another window over the game window (or run game full screen). Probably the pointer has escaped and you are actually clicking into something else.
+The VR input system actually moves the system mouse pointer. Remove HMD and make sure there isn't another window (curse you steam VR status overlay) over the game window (or run game full screen). Probably the pointer has escaped and you are actually clicking into something else.
 
 ## Framerate Issues
 Turn off MSAA. Turn off Realtime Reflection Probes (in Graphics->Settings).\
@@ -65,7 +65,16 @@ POV Tool (eyeball icon). Available when POVX is.
 Gimbal Tool (err, rotatory icon thingy)
 - Press grip or A button and rotate controller to rotate view. Allows full 3d rotation rather than just the y rotation of the warp tool
 
+Camera Tool - Studio Only (cam icon) (combines grip/A move of Warp Tool but swaps the actual warping for HS2 camera selection controls)
+- Press trigger to switch through the camera presets (the 1-10 camera buttons)
+- Long press trigger (hold for 1/2 second or more and release) to reverse switch through camera presets
+- Press touchpad/touchstick button to cycle through Scene (object) cameras (the dropdown camera box) - last selection will return normal camera control (clear selection)
+- Long press touchpad/touchstick (hold for 1/2 second or more and release) to reverse cycle through Scene (object) cameras (the dropdown camera box)
+- Use Grip/A to move camera (like warp tool)
+- When Scene/Object camera is engaged - Use Grip/A to fly the camera around (note: actually moves the camera object - so it'll permanently reposition it)
 
+Tool Selection:
+- In VRSettings.xml (run once with latest code to update the file with new options) you can select which tools are assigned to which controllers and in which order they appear. Leave a tool out entirely if you don't want it.
 
 # Known Issues
 
@@ -74,18 +83,14 @@ It's possible to come out of an HScene or Maker with the view tilted. If that ha
 3D space studio object manipulation is basically impossible as the raycast source and your eyeballs are now different. You can use the move controller and HS2PE to work around a lot of this, but there are limits.\
 Certain GUI elements in studio have a raycast component that renders them invisible in VR. Specifically the scene settings, camera light and the in-scene camera selection drop down. They are present and actually clickable just not visible. Maniputlation of scene settings will probably need to be done outside of VR unless you have incredible spatial memory. Camera light can be adjusted in Graphics instead. The camera selector drop down isn't too hard to click blind...
 
-# Notes on included HS2Graphics
-
-While we wait for Hooh to overhaul Graphics and release HoohSelect2Graphics - The Visual Experience, this is a duct-taped copy of HS2Graphics with support for VR. It's equivalent to the HS2Graphics included with Hanmens SSS packs (and supports that functionality) but has various fixes for VR functionality (including SSS skins in VR). It also adds a preset system that allows you to designate a preset for various modes which will be reapplied as the game jumps between scenes. No more need to keep reactivating SSS everytime the scene changes.
-
-This works for 2D and both the official and unofficial VR modes.
+# Notes on Graphics Mod and VR
 
 Some notes on VR graphics settings:
 
 Since the VR interface is in scene TAA applies to it and tends to make it a bit blurry, probably stick to SMAA in scenes (though I break this guideline all the time...)\
 For best VR performance I recommend turning off MSAA and Realtime Reflection Probes (on Settings) and lowering the SSS settings Postprocess Iterations to 2 and Shader Iterations per pass to 4. Deactivating dither may help, although I didn't notice a big difference.
 
-Note: Be careful with shadows, it might be a quirk of my setup but turning off shadows cuts my frame rate in half. Make sure shadows are on in graphics and in any other mods touching the graphics settings. You need at least one directional light with shadows on in a scene.
+Note: Be careful with shadows, it might be a quirk of my setup but turning off shadows cuts my frame rate in half. Don't assume turning shadows off improves frame rate in VR, test first.
 
 # Simple Installation
 
@@ -93,17 +98,15 @@ Requires HS2DX (will not work with vanilla HS2), BepInEx
 
 Unzip the HS2VR.zip file into your base game directory. 
 
-BACKUP YOUR GLOBALGAMEMANAGERS (in HoneySelect2_Data and StudioNEOV2_Data - make a copy of globalgamemanagers somewhere safe)
+BACKUP YOUR GLOBALGAMEMANAGERS (in HoneySelect2_Data and StudioNEOV2_Data - make a copy of the file globalgamemanagers somewhere safe)
 
-Either patch the globalgamemanagers in HoneySelect2_Data and StudioNEOV2_Data yourself or use the ones from the release section. MAKE SURE YOUR GAME VERSION MATCHES THE GLOBALGAMEMANAGERS VERSION. As of latest this is for HS2DX V1.2.3 ONLY. 
-
-Optionally (but recommended), install the included version of HS2Graphics (same as the latest SSS version of HS2Graphics...but with VR support and related QOL improvements).
-
-
+Either patch the globalgamemanagers in HoneySelect2_Data and StudioNEOV2_Data yourself or use the ones from the release section. MAKE SURE YOUR GAME VERSION MATCHES THE GLOBALGAMEMANAGERS VERSION. As of latest this is for HS2DX V1.2.3 ONLY. If the word 'patch' confuses you, just download and unzip the one from the release section of the GitHub (where you download the plugin from).
 
 
 # Installation Detail
 ## Enabling VR - Only Needed if you don't use the attached globalgamemanagers file
+## Experts only - Mostly here in case there's a future game update and I'm mysteriously unavailable and someone needs to repatch this. 
+## No Really - Just use the included version, it's easy to make small mistakes with the below and cause problems...weird problems.
 
 
 - Get UABE (https://github.com/DerPopo/UABE).
