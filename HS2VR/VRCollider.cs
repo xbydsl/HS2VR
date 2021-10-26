@@ -120,8 +120,8 @@ namespace HS2VR
         /// <summary>
         /// Adds a dynamic bone collider to a controller GO (Thanks Anon11)
         /// </summary>
-        internal static DynamicBoneCollider AddDBCollider(GameObject controllerGameObject, string colliderName, float colliderRadius = 0.1f, float collierHeight = 0f,
-                                                          Vector3 colliderCenter = new Vector3(), DynamicBoneCollider.Direction colliderDirection = default)
+        internal static DynamicBoneCollider AddDBCollider(GameObject controllerGameObject, string colliderName, float colliderRadius = 0.06f, float collierHeight = 0.15f,
+                                                          Vector3 colliderCenter = new Vector3(), DynamicBoneCollider.Direction colliderDirection = DynamicBoneColliderBase.Direction.Z)
         {
             var renderModelTf = GetColliderPosition(controllerGameObject);
             if (renderModelTf == null) return null;
@@ -134,7 +134,7 @@ namespace HS2VR
             collider.m_Center = colliderCenter;
             collider.m_Direction = colliderDirection;
             colliderObject.transform.SetParent(renderModelTf, false);
-
+            
             //Move the collider more into the hand for the index controller
             // var localPos = renderModelTf.up * -0.09f + renderModelTf.forward * -0.075f;
             // var localPos = renderModelTf.forward * -0.075f;
@@ -148,7 +148,7 @@ namespace HS2VR
         /// <summary>
         /// Adds a sphere collider to a controller GO (Thanks Anon11)
         /// </summary>
-        internal static CapsuleCollider AddSphereCollider(GameObject controllerGameObject, string colliderName, float colliderRadius = 0.1f, float collierHeight = 0f)
+        internal static CapsuleCollider AddSphereCollider(GameObject controllerGameObject, string colliderName, float colliderRadius = 0.06f, float collierHeight = 0.15f)
         {
             var renderModelTf = GetColliderPosition(controllerGameObject);
             if (renderModelTf == null) return null;
@@ -159,7 +159,7 @@ namespace HS2VR
             collider.radius = colliderRadius;
             collider.height = collierHeight;
             collider.center = Vector3.zero;
-            collider.direction = 1;
+            collider.direction = 2;
             colliderObject.transform.SetParent(renderModelTf, false);
             
             //Move the collider more into the hand for the index controller
