@@ -52,6 +52,10 @@ namespace HS2VR
         public List<KeySet> KeySets { get { return _KeySets; } set { _KeySets = value; } }
         private List<KeySet> _KeySets = null;
 
+        private bool _PrivacyMode;
+        [XmlComment("Privacy mode (blacken out screen)")]
+        public bool PrivacyMode { get { return _PrivacyMode; } set { _PrivacyMode = value; } }
+        
         private string _DefaultMode = "Seated";
         [XmlComment("Seated - Mouse/KB, Standing - Controllers")]
         public string DefaultMode { get { return _DefaultMode; } set { _DefaultMode = value; } }

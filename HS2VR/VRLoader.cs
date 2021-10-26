@@ -142,6 +142,10 @@ namespace HS2VR
                     VR.Manager.SetMode<GenericStandingMode>();
                 }
                 
+                if (((HS2VRSettings)VR.Settings).PrivacyMode.Equals(true))
+                {
+                    PrivacyMode.Enable();
+                }
             }
         }
 

@@ -77,6 +77,11 @@ namespace HS2VR.Interpreters
             StartCoroutine(FindCamlight());
         }
 
+        public override bool IsIgnoredCanvas(Canvas canvas)
+        {
+            return PrivacyMode.Check(canvas);
+        }
+        
         private IEnumerator FindCamlight()
         {
             camLight = null;

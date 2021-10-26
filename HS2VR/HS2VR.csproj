@@ -139,6 +139,7 @@
     <Compile Include="Interpreters\OtherSceneInterpreter.cs" />
     <Compile Include="Interpreters\SceneInterpreter.cs" />
     <Compile Include="POVTool.cs" />
+    <Compile Include="PrivacyMode.cs" />
     <Compile Include="RotationTool.cs" />
     <Compile Include="VRCollider.cs" />
     <Compile Include="VRColliderHelper.cs" />
