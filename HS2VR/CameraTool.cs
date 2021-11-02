@@ -157,7 +157,7 @@ namespace HS2VR
             }
             else if (Controller.GetPressUp(Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger) && Time.unscaledTime - triggerStartTime <= .5f && !rewindCamera)
             {
-                if (currentCamera == 9)
+                if (currentCamera == Studio.Studio.Instance.sceneInfo.cameraData.Length - 1)
                     currentCamera = 0;
                 else
                     currentCamera++;
