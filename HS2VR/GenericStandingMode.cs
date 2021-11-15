@@ -75,9 +75,10 @@ namespace HS2VR
             
         }
 
-        public void OnDestroy()
-        {
+        public override void OnDestroy()
+        {            
             Destroy(_CapturePanorama);
+            base.OnDestroy();
         }
 
         protected override void OnUpdate()
