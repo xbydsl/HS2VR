@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 using UnityEngine;
 using VRGIN.Core;
 
@@ -34,7 +34,7 @@ namespace HS2VR
 
 
         /// <summary>
-        /// Got tired of searching for the correct hooks, just check for new dynamic bones on a loop.  Genious! (Should be able to use CharCustFunCtrl for this later)
+        /// Got tired of searching for the correct hooks, just check for new dynamic bones on a loop.  Genius! (Should be able to use CharCustFunCtrl for this later)
         /// </summary>
         internal static IEnumerator LoopEveryXSeconds()
         {

@@ -1,11 +1,11 @@
-using System;
+//using System;
 using UnityEngine;
 using VRGIN.Core;
 using VRGIN.Controls.Tools;
 using VRGIN.Helpers;
 using VRGIN.Template;
 
-using HS2VR.Interpreters;
+using HS2VR.InterpretersMaingame;
 
 using Valve.VR;
 
@@ -75,9 +75,9 @@ namespace HS2VR
             var tGrip = device.GetPressUp(EVRButtonId.k_EButton_Grip);
             var tTriggerClicked = device.GetPressUp(EVRButtonId.k_EButton_SteamVR_Trigger);
 
-            if((VR.Interpreter as HS2Interpreter).isHScene)
+            if((VR.Interpreter as HS2MaingameInterpreter).isHScene)
             {
-                var scene = ((VR.Interpreter as HS2Interpreter).currentSceneInterpreter as HSceneInterpreter)._HScene;
+                var scene = ((VR.Interpreter as HS2MaingameInterpreter).currentSceneInterpreter as HSceneInterpreter)._HScene;
                 HSceneSprite scene_sprite_instance = Singleton<HSceneSprite>.Instance;
 
                 //VRLog.Info("Touchpad direction: {0}", touchpad_direction);

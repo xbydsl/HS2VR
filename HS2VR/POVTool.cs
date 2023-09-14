@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 using UnityEngine;
 using VRGIN.Controls.Tools;
-using VRGIN.Core;
+//using VRGIN.Core;
 using VRGIN.Helpers;
-using VRGIN.Template;
+//using VRGIN.Template;
 
 namespace HS2VR
 {

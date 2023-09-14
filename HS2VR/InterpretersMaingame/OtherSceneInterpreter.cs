@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿//using UnityEngine;
 using VRGIN.Core;
-using Valve.VR;
+//using Valve.VR;
 
-namespace HS2VR.Interpreters
+namespace HS2VR.InterpretersMaingame
 {
     class OtherSceneInterpreter : SceneInterpreter
     {

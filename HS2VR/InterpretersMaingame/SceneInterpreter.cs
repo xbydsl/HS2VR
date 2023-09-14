@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//using System.Linq;
+//using System.Collections.Generic;
+//using UnityEngine;
 using UnityEngine.SceneManagement;
-
 using VRGIN.Core;
 
-namespace HS2VR.Interpreters
+namespace HS2VR.InterpretersMaingame
 {
     abstract class SceneInterpreter
     {

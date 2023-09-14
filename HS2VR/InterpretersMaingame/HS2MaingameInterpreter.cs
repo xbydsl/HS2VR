@@ -1,15 +1,15 @@
-﻿using System;
+﻿//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PostProcessing;
-using UnityEngine.Rendering.PostProcessing;
+//using UnityEngine.PostProcessing;
+//using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using VRGIN.Core;
 
-namespace HS2VR.Interpreters
+namespace HS2VR.InterpretersMaingame
 {
-    class HS2Interpreter : GameInterpreter
+    class HS2MaingameInterpreter : GameInterpreter
     {
         public Dictionary<string, int> scenes = new Dictionary<string, int>()
                                             {
@@ -117,6 +117,7 @@ namespace HS2VR.Interpreters
             if (camLight == null)
                 VRLog.Info("No Camlight Found");
         }
+
 
         private GameObject camLight;
         private Light camLightComponent;

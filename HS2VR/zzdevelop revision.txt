@@ -1,0 +1,106 @@
+
+
+----------------------------------------------
+TO DO LIST 2023-09-08
+----------------------------------------------
+
+Fix controllers movement in seated mode
+  the movement is reset to previous position after grip is released
+
+
+Enable & test save thumbnail camera working
+
+Hide head when inside head
+  to test. worked in KKS_VR
+
+Fix startup first mode "broken"
+	lots of things messed up (controller markers etc)
+	probably need more time before invoking some of the init routines (which one?)
+	kks_vr code for waiting for ready status do not work on older VRGIN
+
+Hide/show controllers with XML setup/key/button
+
+Fix some keys not working sometimes (space, Q etc)
+	only when starting in standing mode?
+	inherited from HS2VR probably
+	try to start in Seated, and check for Settings on scene load
+
+Bugs?
+	joystick doesn't work - should do mouse scroll on GUI apparently
+	mirror fix doesn't work
+	load/save hooks fov is too open, and the camera jumps around after saving/loading
+	if last execution used different screen resolution, GUI will not be usable. it's fixed with one restart. bug coming from older HS2VR.
+	privacy screen turns GUI black, unusable in Studio, switched off in Studio. Main game not tested
+	CapturePanorama disabled, not tested yet
+
+
+----------------------------------------------
+TO DO / longer term list
+----------------------------------------------
+
+Enable HS2 main game VR mode
+  choose approach - two dll as KKS_VR or just one as OrangeSpork/HSVR2
+  check official VR game and KKS_VR for possible additional functionality
+  test!!
+
+Show hand instead of controller 
+  no tracking, just replace the controller 3d model
+
+Add Warp function in Studio
+  keep Studio with just one tool, bind Warp to two button press maybe
+  or fast movement with joystick
+
+Enable and test VR panorama screenshot camera
+
+Remove unused references and libs
+
+Keyboard shortcut to enable/disable boop collider
+  could be annoying 
+
+Make boop collider smaller
+  too much deformation
+
+Add new settings to XML file handler
+  voicedistance
+  new seated-wtih-controls mode
+
+Check impersonation/POV functionality
+  compare KKS_VR and HS2VR, implement
+
+Enable hand track (OpenXR)
+
+Implement privacy mode
+  current privacy mode makes the GUI a black rectangle, unusable at least in Studio
+
+Capture VR180 video
+  complex! only if there is any code ready to adapt
+
+----------------------------------------------
+DONE
+----------------------------------------------
+
+Fix grip control for objects!
+  most important of all
+
+Port DeviceLegacy?
+  seems not necessary - controllers work with grip/move menu
+
+Fix size of gizmo spheres
+  they are small and hidden in chara body
+  (not needed to fix finally)
+
+Fix GUI laser not showing
+
+Create a new "seated with controllers" mode
+
+Fix Q not showing/hiding gizmos
+
+Fix mouse camera movement blocked
+  at VRCameraMoverHelper - it was designed for StandingMode only
+
+Fix light source
+  it was an XML option already - change directional light for head spotlight
+
+
+Fix objects moving to 0,0,0 sometimes when switching seated/standing modes
+  shortcut Ctrl-C already taken, pick another

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 using UnityEngine;
 
 namespace HS2VR
 {
 
     // Code 'borrowed' from the KK Plugins Subtitles project...just needed enough differences for the VR plugin to make a fork needed
+    // Not needed in Studio
 
     public class VRFollowUI : MonoBehaviour
     {

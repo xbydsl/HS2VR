@@ -2,24 +2,28 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
+//using System.Reflection.Emit;
 using Actor;
 using ADV;
 using AIChara;
-using BepInEx.Harmony;
+//using BepInEx.Harmony;
 using CharaCustom;
 using HarmonyLib;
-using HS2;
+//using HS2;
 using Manager;
 using UnityEngine;
 using VRGIN.Core;
-using VRGIN.Modes;
+//using VRGIN.Modes;
+//using static UnityEngine.UI.Image;
 
 namespace HS2VR
 {
     public static class VRPatcher
+    // CAMERA position and adjustments patch from HS2VR
+    // controls Studio camera and (main game) POV cameras
+    
     {
         public static void Patch()
         {
@@ -28,7 +32,7 @@ namespace HS2VR
                 var harmony = new Harmony("com.killmar.HS2VR");
                 harmony.PatchAll(typeof(VRPatcher));
 
-                Type povxController = AccessTools.TypeByName("HS2_PovX.Controller");
+                System.Type povxController = AccessTools.TypeByName("HS2_PovX.Controller");
                 if (povxController != null)
                 {
                     povEnabledField = AccessTools.Field(povxController, "povEnabled");
@@ -46,7 +50,7 @@ namespace HS2VR
 
                 }
 
-                Type hSwitcher = AccessTools.TypeByName("HS2_HCharaSwitcher.HS2_HCharaSwitcher");
+                System.Type hSwitcher = AccessTools.TypeByName("HS2_HCharaSwitcher.HS2_HCharaSwitcher");
                 if (hSwitcher != null)
                 {
                     VRLog.Info("Hooked up to Hara switcher!");
@@ -58,7 +62,7 @@ namespace HS2VR
                 }
 
 
-                Type subtitleType = AccessTools.TypeByName("KK_Plugins.Subtitles");
+                System.Type subtitleType = AccessTools.TypeByName("KK_Plugins.Subtitles");
                 if (subtitleType != null)
                 {
                     dicdiclstVoiceListField = AccessTools.Field(typeof(HVoiceCtrl), "dicdiclstVoiceList");
@@ -108,7 +112,6 @@ namespace HS2VR
         public static bool POVPaused { get; set; }
         public static bool mCharSwitchPreservePos { get; set; }
         public static bool mPositionChangeResetPov { get; set; }
-
 
 
         public static void CharaCycleKeyPress()
@@ -212,11 +215,12 @@ namespace HS2VR
         [HarmonyPatch(typeof(Camera), "set_fieldOfView")]
         public static bool SetFOV(Camera __instance)
         {
+            
             if (__instance.name == "MainCamera" || __instance.name.Contains("VRGIN") || __instance.name == "Main Camera")
                 return false;
             else
                 return true;
-        }
+         }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LogoScene), "Start")]
@@ -480,7 +484,7 @@ namespace HS2VR
                 __instance.target = VR.Camera.Head;
             }
             return true;
-        }
+         }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NeckLookControllerVer2), "LateUpdate")]
@@ -492,6 +496,8 @@ namespace HS2VR
             return true;
         }
 
+        
+        // (probably) syncs the seated mode control camera with mouse movement marker
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CameraControl_Ver2), "LateUpdate")]
         public static void CameraControlV2(CameraControl_Ver2 __instance)
@@ -500,11 +506,13 @@ namespace HS2VR
             {
                 return;
             }
-
+            // todo: try if disabling...
+            /*
             if (VRManager.Instance.Mode.GetType().Equals(typeof(GenericSeatedMode)))
             {
                 VRPatcher.SyncToMainTransform(__instance.transform, false);
             }
+            */
         }
 
         private static void MoveMainCameraToVRCamera()
@@ -512,6 +520,7 @@ namespace HS2VR
             Camera main = Camera.main;
             if (main != null)
             {
+
                 Transform transform = main.transform;
                 if (transform != null)
                 {
@@ -524,15 +533,17 @@ namespace HS2VR
             }
         }
 
+        // repositions the VR camera origin to a given position/angle
         public static void SyncToMainTransform(Transform target, bool positionOnly = false, bool adjustHead = false)
         {
+
             Transform origin = VR.Camera.Origin;
             Transform head = VR.Camera.Head;
             if (!positionOnly)
             {
                 origin.rotation = target.rotation;
             }
-
+            
 
             Vector3 position = target.position;
 
@@ -576,7 +587,7 @@ namespace HS2VR
             VRPlugin.CameraResetPos = target.position;
             VRPlugin.CameraResetRot = target.rotation;
 
-            VRLog.Info($"Moving VR Camera to {target.position} Head Cam Y: {VR.Camera.SteamCam.head.position.y}");
+            // VRLog.Info($"Moving VR Camera to {target.position} Head Cam Y: {VR.Camera.SteamCam.head.position.y}");
             if (!positionOnly)
             {
                 VRManager.Instance.Mode.MoveToPosition(target.position, target.rotation, false);
@@ -585,7 +596,7 @@ namespace HS2VR
             {
                 VRManager.Instance.Mode.MoveToPosition(target.position, false);
             }
-            VRLog.Info($"New VR Camera Pos: {VR.Camera.Origin.position}");
+            // VRLog.Info($"New VR Camera Pos: {VR.Camera.Origin.position}");
         }
 
         public static Transform FindDescendant(Transform start, string name)

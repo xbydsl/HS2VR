@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using VRGIN.Core;
-using VRGIN.Controls;
-using VRGIN.Template;
-using Valve.VR;
+//using VRGIN.Controls;
+//using VRGIN.Template;
+//using Valve.VR;
 
 
-namespace HS2VR.Interpreters
+namespace HS2VR.InterpretersMaingame
 {
     class HSceneInterpreter : SceneInterpreter
     {

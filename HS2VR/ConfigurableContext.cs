@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
 //using VRGIN.Controls.Speech;
 using VRGIN.Core;
-using VRGIN.Helpers;
+//using VRGIN.Helpers;
 using VRGIN.Visuals;
 
 namespace HS2VR
 {
     /// <summary>
     /// Context class that can be serialized as an XML. Normally, you would implement this yourself and simply override getters with sensible values.
+    /// 
     /// </summary>
     [XmlRoot("Context")]
     public class ConfigurableContext : IVRManagerContext
@@ -86,5 +87,6 @@ namespace HS2VR
         public string Version { get; set; }
         public float MaxFarClipPlane { get; set; }
         public int GuiMaterialRenderQueue { get; set; }
+                
     }
 }

@@ -1,16 +1,17 @@
-﻿using HS2VR.Capture;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+//using System.Text;
 using UnityEngine;
-using UnityEngine.Events;
+//using UnityEngine.Events;
 using Valve.VR;
 using VRGIN.Controls;
 using VRGIN.Controls.Tools;
 using VRGIN.Core;
 using VRGIN.Helpers;
 using VRGIN.Modes;
+using HS2VR.StudioControl;
+// using HS2VR.Capture;
 
 namespace HS2VR
 {
@@ -20,22 +21,32 @@ namespace HS2VR
         {
             return base.CreateShortcuts().Concat(new IShortcut[] {
 
-                new MultiKeyboardShortcut(VR.Settings.Shortcuts.ChangeMode.GetKeyStrokes(), () => { 
+                new MultiKeyboardShortcut(VR.Settings.Shortcuts.ChangeMode.GetKeyStrokes(), () => {
+                    VRLog.Info("HS2VR: changing to Seated Mode");
                     VR.Manager.SetMode<GenericSeatedMode>();
+                    VRLoader.currentMode = "Seated";
+                    // StudioTool.CheckHandlers();
                 }),
-                new MultiKeyboardShortcut(VR.Settings.Shortcuts.ResetView, () => {
+                new MultiKeyboardShortcut(VR.Settings.Shortcuts.ResetView, () => 
+                {
+ 
                     VR.Camera.Origin.Rotate(new Vector3(0, VR.Camera.Origin.rotation.y, 0), Space.World);
                     VR.Camera.Head.Rotate(new Vector3(0, VR.Camera.Head.rotation.y, 0), Space.World);
+                    
                 }),
                 new MultiKeyboardShortcut(((HS2VRSettings)VR.Settings).HS2Shortcuts.SuspendPOVToggle.GetKeyStrokes(), () =>
                 {
-                    VRPatcher.POVPaused = !VRPatcher.POVPaused;
+
+                    // VRPatcher.POVPaused = !VRPatcher.POVPaused;
+                    VRPatcher.POVPaused = true;
+                    
                 })
             });
         }
 
         public override void MoveToPosition(Vector3 targetPosition, Quaternion rotation = default(Quaternion), bool ignoreHeight = true)
         {
+
             var targetForward = Calculator.GetForwardVector(rotation);
             var currentForward = Calculator.GetForwardVector(VR.Camera.Head.rotation);
 
@@ -50,17 +61,19 @@ namespace HS2VR
             var newTargetPosition = new Vector3(targetPosition.x, targetY, targetPosition.z);
             var myPosition = new Vector3(VR.Camera.Head.position.x, myY, VR.Camera.Head.position.z);
             VR.Camera.Origin.position = (newTargetPosition - (myPosition - VR.Camera.Origin.position));
+
         }
 
         protected override void OnStart()
         {
+
             VR.Camera.SteamCam.origin.transform.position = Vector3.zero;
             VR.Camera.SteamCam.origin.transform.rotation = Quaternion.identity;
 
             base.OnStart();
 
-            _CapturePanorama = VR.Camera.SteamCam.gameObject.AddComponent<HS2VRCapturePanorama>();
-
+            // disabled capturepanorama
+            // _CapturePanorama = VR.Camera.SteamCam.gameObject.AddComponent<HS2VRCapturePanorama>();
             //  SteamVR.instance.overlay.ShowKeyboard(0, 0, "Keyboard", 256, "", false, 0);
             //  SteamVR_Events.System(Valve.VR.EVREventType.VREvent_KeyboardClosed).Listen(OnKeyboardClosed);
 
@@ -68,51 +81,69 @@ namespace HS2VR
             MoveToPosition(VRPlugin.CameraResetPos, VRPlugin.CameraResetRot, false);
         }
 
-        private HS2VRCapturePanorama _CapturePanorama;
+        // private HS2VRCapturePanorama _CapturePanorama;
 
         private void OnKeyboardClosed(VREvent_t args)
         {
             
         }
 
+        /*
         public override void OnDestroy()
         {            
-            Destroy(_CapturePanorama);
+            // Destroy(_CapturePanorama);
             base.OnDestroy();
         }
+        */
 
+
+
+        //  in KKS_VR CheckInput() was called from the Tool, in HS2VR from Standing/Seated modes
+        //  apparently if it's called twice it generates errors
         protected override void OnUpdate()
         {
-            CheckInput();   
-        }   
+            CheckInput();
+        }
+        
+
 
         private void BuildTool(string tool, List<Type> toolList)
         {
-            switch (tool.Trim().ToUpper())
+
+            if (Application.productName != "StudioNEOV2")
             {
-                case "MENU":
-                    toolList.Add(typeof(MenuTool));
-                    break;
-                case "WARP":
-                    toolList.Add(typeof(WarpTool));
-                    break;
-                case "PLAY":
-                    if (Application.productName != "StudioNEOV2")
+                // tools available for Maingame
+                switch (tool.Trim().ToUpper())
+                {
+                    case "MENU":
+                        toolList.Add(typeof(MenuTool));
+                        break;
+                    case "WARP":
+                        toolList.Add(typeof(WarpTool));
+                        break;
+                    case "PLAY":
                         toolList.Add(typeof(PlayTool));
-                    break;
-                case "CAM":
-                    if (Application.productName == "StudioNEOV2")
-                        toolList.Add(typeof(CameraTool));
-                    break;
-                case "POV":
-                    if (VRPatcher.POVAvailable)
+                        break;
+                    // case "CAM":
+                    // if (Application.productName == "StudioNEOV2")
+                    //     toolList.Add(typeof(CameraTool));
+                    // break;
+                    case "POV":
+                        //    if (VRPatcher.POVAvailable)
                         toolList.Add(typeof(POVTool));
-                    break;
-                case "ROT":
-                    toolList.Add(typeof(RotationTool));
-                    break;
+                        break;
+                    case "ROT":
+                        toolList.Add(typeof(RotationTool));
+                        break;
+                }
             }
+            else
+            {
+                toolList.Add(typeof(StudioControlTool));
+            }
+
         }
+        
 
         public override IEnumerable<Type> LeftTools
         {

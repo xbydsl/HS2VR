@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Xml.Linq;
+//using System.ComponentModel;
+//using System.IO;
+//using System.Linq;
+//using System.Reflection;
+//using System.Text;
+//using System.Xml.Linq;
 using System.Xml.Serialization;
-using UnityEngine;
-using VRGIN.Controls;
+//using UnityEngine;
+//using VRGIN.Controls;
 using VRGIN.Core;
-using VRGIN.Helpers;
-using static VRGIN.Visuals.GUIMonitor;
+//using VRGIN.Helpers;
+//using static VRGIN.Visuals.GUIMonitor;
 
 namespace HS2VR
 {
     /// <summary>
     /// Class that holds settings for VR. Saved as an XML file.
     /// 
+    /// Most other settings are handled by VRGIN directly.
     /// In order to create your own settings file, extend this class and add your own properties. Make sure to call <see cref="TriggerPropertyChanged(string)"/> if you want to use
     /// the events.
     /// IMPORTANT: When extending, add an XmlRoot annotation to the class like so:
@@ -156,6 +157,7 @@ namespace HS2VR
             this.Left = Left;
             this.Center = Center;
         }
+        
 
         [System.Xml.Serialization.XmlElement("Trigger")]
         public String Trigger { get; set; }
